@@ -27,7 +27,7 @@ async function githubStatsLoader({ request, context }: { request: Request; conte
       headers: {
         Accept: 'application/vnd.github.v3+json',
         Authorization: `Bearer ${githubToken}`,
-        'User-Agent': 'bolt.diy-app',
+        'User-Agent': 'stackbird.new-app',
       },
     });
 
@@ -53,7 +53,7 @@ async function githubStatsLoader({ request, context }: { request: Request; conte
           headers: {
             Accept: 'application/vnd.github.v3+json',
             Authorization: `Bearer ${githubToken}`,
-            'User-Agent': 'bolt.diy-app',
+            'User-Agent': 'stackbird.new-app',
           },
         },
       );
@@ -80,7 +80,7 @@ async function githubStatsLoader({ request, context }: { request: Request; conte
             headers: {
               Accept: 'application/vnd.github.v3+json',
               Authorization: `Bearer ${githubToken}`,
-              'User-Agent': 'bolt.diy-app',
+              'User-Agent': 'stackbird.new-app',
             },
           });
 

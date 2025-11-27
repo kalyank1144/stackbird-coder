@@ -1,29 +1,29 @@
-# Code Owners for bolt.diy
+# Code Owners for stackbird.new
 # These users/teams will automatically be requested for review when files are modified
 
 # Global ownership - repository maintainers
-* @stackblitz-labs/bolt-maintainers
+* @stackblitz-labs/stackbird-maintainers
 
 # GitHub workflows and CI/CD configuration - require maintainer review
-/.github/ @stackblitz-labs/bolt-maintainers
-/package.json @stackblitz-labs/bolt-maintainers
-/pnpm-lock.yaml @stackblitz-labs/bolt-maintainers
+/.github/ @stackblitz-labs/stackbird-maintainers
+/package.json @stackblitz-labs/stackbird-maintainers
+/pnpm-lock.yaml @stackblitz-labs/stackbird-maintainers
 
 # Security-sensitive configurations - require maintainer review
-/.env* @stackblitz-labs/bolt-maintainers
-/wrangler.toml @stackblitz-labs/bolt-maintainers  
-/Dockerfile @stackblitz-labs/bolt-maintainers
-/docker-compose.yaml @stackblitz-labs/bolt-maintainers
+/.env* @stackblitz-labs/stackbird-maintainers
+/wrangler.toml @stackblitz-labs/stackbird-maintainers  
+/Dockerfile @stackblitz-labs/stackbird-maintainers
+/docker-compose.yaml @stackblitz-labs/stackbird-maintainers
 
 # Core application architecture - require maintainer review
-/app/lib/.server/ @stackblitz-labs/bolt-maintainers
-/app/routes/api.* @stackblitz-labs/bolt-maintainers
+/app/lib/.server/ @stackblitz-labs/stackbird-maintainers
+/app/routes/api.* @stackblitz-labs/stackbird-maintainers
 
 # Build and deployment configuration - require maintainer review
-/vite*.config.ts @stackblitz-labs/bolt-maintainers
-/tsconfig.json @stackblitz-labs/bolt-maintainers
-/uno.config.ts @stackblitz-labs/bolt-maintainers
-/eslint.config.mjs @stackblitz-labs/bolt-maintainers
+/vite*.config.ts @stackblitz-labs/stackbird-maintainers
+/tsconfig.json @stackblitz-labs/stackbird-maintainers
+/uno.config.ts @stackblitz-labs/stackbird-maintainers
+/eslint.config.mjs @stackblitz-labs/stackbird-maintainers
 
 # Documentation (optional review)
 /*.md

@@ -85,7 +85,7 @@ export function TabsWithSlider({
             tab.id === activeTab
               ? classNames('text-white shadow-sm shadow-purple-500/20', activeTabClassName)
               : classNames(
-                  'bg-bolt-elements-background-depth-2 dark:bg-bolt-elements-background-depth-3 text-bolt-elements-textPrimary dark:text-bolt-elements-textPrimary-dark hover:bg-bolt-elements-background-depth-3 dark:hover:bg-bolt-elements-background-depth-4 border border-bolt-elements-borderColor dark:border-bolt-elements-borderColor-dark',
+                  'bg-stackbird-elements-background-depth-2 dark:bg-stackbird-elements-background-depth-3 text-stackbird-elements-textPrimary dark:text-stackbird-elements-textPrimary-dark hover:bg-stackbird-elements-background-depth-3 dark:hover:bg-stackbird-elements-background-depth-4 border border-stackbird-elements-borderColor dark:border-stackbird-elements-borderColor-dark',
                   tabClassName,
                 ),
           )}

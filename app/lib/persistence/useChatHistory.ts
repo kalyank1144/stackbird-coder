@@ -130,15 +130,15 @@ export function useChatHistory() {
                   role: 'assistant',
 
                   // Combine followup message and the artifact with files and command actions
-                  content: `Bolt Restored your chat from a snapshot. You can revert this message to load the full chat history.
-                  <boltArtifact id="restored-project-setup" title="Restored Project & Setup" type="bundled">
+                  content: `Stackbird Restored your chat from a snapshot. You can revert this message to load the full chat history.
+                  <stackbirdArtifact id="restored-project-setup" title="Restored Project & Setup" type="bundled">
                   ${Object.entries(snapshot?.files || {})
                     .map(([key, value]) => {
                       if (value?.type === 'file') {
                         return `
-                      <boltAction type="file" filePath="${key}">
+                      <stackbirdAction type="file" filePath="${key}">
 ${value.content}
-                      </boltAction>
+                      </stackbirdAction>
                       `;
                       } else {
                         return ``;
@@ -146,7 +146,7 @@ ${value.content}
                     })
                     .join('\n')}
                   ${commandActionsString} 
-                  </boltArtifact>
+                  </stackbirdArtifact>
                   `, // Added commandActionsString, followupMessage, updated id and title
                   annotations: [
                     'no-store',
