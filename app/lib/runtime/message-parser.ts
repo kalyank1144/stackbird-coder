@@ -1,4 +1,11 @@
-import type { ActionType, StackbirdAction, StackbirdActionData, FileAction, ShellAction, SupabaseAction } from '~/types/actions';
+import type {
+  ActionType,
+  StackbirdAction,
+  StackbirdActionData,
+  FileAction,
+  ShellAction,
+  SupabaseAction,
+} from '~/types/actions';
 import type { StackbirdArtifactData } from '~/types/artifact';
 import { createScopedLogger } from '~/utils/logger';
 import { unreachable } from '~/utils/unreachable';
@@ -77,7 +84,7 @@ export class StreamingMessageParser {
   #messages = new Map<string, MessageState>();
   #artifactCounter = 0;
 
-  constructor(private _options: StreamingMessageParserOptions = {}) { }
+  constructor(private _options: StreamingMessageParserOptions = {}) {}
 
   parse(messageId: string, input: string) {
     let state = this.#messages.get(messageId);

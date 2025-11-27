@@ -67,7 +67,10 @@ export const InspectorPanel = ({ selectedElement, isVisible, onClose }: Inspecto
       {/* Header */}
       <div className="flex items-center justify-between p-3 border-b border-stackbird-elements-borderColor">
         <h3 className="font-medium text-stackbird-elements-textPrimary">Element Inspector</h3>
-        <button onClick={onClose} className="text-stackbird-elements-textSecondary hover:text-stackbird-elements-textPrimary">
+        <button
+          onClick={onClose}
+          className="text-stackbird-elements-textSecondary hover:text-stackbird-elements-textPrimary"
+        >
           ✕
         </button>
       </div>

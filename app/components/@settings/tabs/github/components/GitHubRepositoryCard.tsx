@@ -30,7 +30,10 @@ export function GitHubRepositoryCard({ repo, onClone }: GitHubRepositoryCardProp
                 <div className="i-ph:git-fork w-3 h-3 text-stackbird-elements-textTertiary" title="Forked repository" />
               )}
               {repo.archived && (
-                <div className="i-ph:archive w-3 h-3 text-stackbird-elements-textTertiary" title="Archived repository" />
+                <div
+                  className="i-ph:archive w-3 h-3 text-stackbird-elements-textTertiary"
+                  title="Archived repository"
+                />
               )}
             </div>
             <div className="flex items-center gap-3 text-xs text-stackbird-elements-textSecondary">

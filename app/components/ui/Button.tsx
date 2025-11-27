@@ -7,7 +7,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-stackbird-elements-background text-stackbird-elements-textPrimary hover:bg-stackbird-elements-background-depth-2',
+        default:
+          'bg-stackbird-elements-background text-stackbird-elements-textPrimary hover:bg-stackbird-elements-background-depth-2',
         destructive: 'bg-red-500 text-white hover:bg-red-600',
         outline:
           'border border-stackbird-elements-borderColor bg-transparent hover:bg-stackbird-elements-background-depth-2 hover:text-stackbird-elements-textPrimary text-stackbird-elements-textPrimary dark:border-stackbird-elements-borderColorActive',

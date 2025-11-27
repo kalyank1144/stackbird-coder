@@ -167,7 +167,9 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
         </div>
       )}
       <div
-        className={classNames('relative shadow-xs border border-stackbird-elements-borderColor backdrop-blur rounded-lg')}
+        className={classNames(
+          'relative shadow-xs border border-stackbird-elements-borderColor backdrop-blur rounded-lg',
+        )}
       >
         <textarea
           ref={props.textareaRef}
@@ -236,7 +238,9 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
             minHeight: props.TEXTAREA_MIN_HEIGHT,
             maxHeight: props.TEXTAREA_MAX_HEIGHT,
           }}
-          placeholder={props.chatMode === 'build' ? 'How can Stackbird help you today?' : 'What would you like to discuss?'}
+          placeholder={
+            props.chatMode === 'build' ? 'How can Stackbird help you today?' : 'What would you like to discuss?'
+          }
           translate="no"
         />
         <ClientOnly>
@@ -322,7 +326,8 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
           {props.input.length > 3 ? (
             <div className="text-xs text-stackbird-elements-textTertiary">
               Use <kbd className="kdb px-1.5 py-0.5 rounded bg-stackbird-elements-background-depth-2">Shift</kbd> +{' '}
-              <kbd className="kdb px-1.5 py-0.5 rounded bg-stackbird-elements-background-depth-2">Return</kbd> a new line
+              <kbd className="kdb px-1.5 py-0.5 rounded bg-stackbird-elements-background-depth-2">Return</kbd> a new
+              line
             </div>
           ) : null}
           <SupabaseConnection />

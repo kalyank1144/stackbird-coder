@@ -188,7 +188,9 @@ export function SupabaseConnection() {
 
                 <div className="flex items-center gap-4 p-3 bg-[#F8F8F8] dark:bg-[#1A1A1A] rounded-lg">
                   <div>
-                    <h4 className="text-sm font-medium text-stackbird-elements-textPrimary">{supabaseConn.user?.email}</h4>
+                    <h4 className="text-sm font-medium text-stackbird-elements-textPrimary">
+                      {supabaseConn.user?.email}
+                    </h4>
                     <p className="text-xs text-stackbird-elements-textSecondary">Role: {supabaseConn.user?.role}</p>
                   </div>
                 </div>
@@ -325,7 +327,8 @@ function Button({ active = false, disabled = false, children, onClick, className
         {
           'bg-stackbird-elements-item-backgroundDefault hover:bg-stackbird-elements-item-backgroundActive text-stackbird-elements-textTertiary hover:text-stackbird-elements-textPrimary':
             !active,
-          'bg-stackbird-elements-item-backgroundDefault text-stackbird-elements-item-contentAccent': active && !disabled,
+          'bg-stackbird-elements-item-backgroundDefault text-stackbird-elements-item-contentAccent':
+            active && !disabled,
           'bg-stackbird-elements-item-backgroundDefault text-alpha-gray-20 dark:text-alpha-white-20 cursor-not-allowed':
             disabled,
         },

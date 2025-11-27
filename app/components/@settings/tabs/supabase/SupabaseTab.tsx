@@ -794,7 +794,9 @@ export default function SupabaseTab() {
                       <div className="i-ph:user w-6 h-6 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-sm font-medium text-stackbird-elements-textPrimary">{connection.user.email}</h4>
+                      <h4 className="text-sm font-medium text-stackbird-elements-textPrimary">
+                        {connection.user.email}
+                      </h4>
                       <p className="text-sm text-stackbird-elements-textSecondary">
                         {connection.user.role} • Member since{' '}
                         {new Date(connection.user.created_at).toLocaleDateString()}

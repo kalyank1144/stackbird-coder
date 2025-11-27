@@ -86,7 +86,13 @@ const rehypeSanitizeOptions: RehypeSanitizeOptions = {
     div: [
       ...(defaultSchema.attributes?.div ?? []),
       'data*',
-      ['className', '__stackbirdArtifact__', '__stackbirdThought__', '__stackbirdQuickAction', '__stackbirdSelectedElement__'],
+      [
+        'className',
+        '__stackbirdArtifact__',
+        '__stackbirdThought__',
+        '__stackbirdQuickAction',
+        '__stackbirdSelectedElement__',
+      ],
 
       // ['className', '__stackbirdThought__']
     ],

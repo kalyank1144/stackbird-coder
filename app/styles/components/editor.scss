@@ -6,12 +6,18 @@
 
   --cm-gutter-backgroundColor: var(--stackbird-elements-editor-gutter-backgroundColor, var(--cm-backgroundColor));
   --cm-gutter-textColor: var(--stackbird-elements-editor-gutter-textColor, var(--stackbird-elements-textSecondary));
-  --cm-gutter-activeLineTextColor: var(--stackbird-elements-editor-gutter-activeLineTextColor, var(--cm-gutter-textColor));
+  --cm-gutter-activeLineTextColor: var(
+    --stackbird-elements-editor-gutter-activeLineTextColor,
+    var(--cm-gutter-textColor)
+  );
 
   /* Fold Gutter */
 
   --cm-foldGutter-textColor: var(--stackbird-elements-editor-foldGutter-textColor, var(--cm-gutter-textColor));
-  --cm-foldGutter-textColorHover: var(--stackbird-elements-editor-foldGutter-textColorHover, var(--cm-gutter-textColor));
+  --cm-foldGutter-textColorHover: var(
+    --stackbird-elements-editor-foldGutter-textColorHover,
+    var(--cm-gutter-textColor)
+  );
 
   /* Active Line */
 
@@ -41,7 +47,10 @@
 
   --cm-search-backgroundColor: var(--stackbird-elements-editor-search-backgroundColor, var(--cm-backgroundColor));
   --cm-search-textColor: var(--stackbird-elements-editor-search-textColor, var(--stackbird-elements-textSecondary));
-  --cm-search-closeButton-backgroundColor: var(--stackbird-elements-editor-search-closeButton-backgroundColor, transparent);
+  --cm-search-closeButton-backgroundColor: var(
+    --stackbird-elements-editor-search-closeButton-backgroundColor,
+    transparent
+  );
 
   --cm-search-closeButton-backgroundColorHover: var(
     --stackbird-elements-editor-search-closeButton-backgroundColorHover,
@@ -68,7 +77,10 @@
     var(--stackbird-elements-item-backgroundActive)
   );
 
-  --cm-search-button-textColor: var(--stackbird-elements-editor-search-button-textColor, var(--stackbird-elements-textSecondary));
+  --cm-search-button-textColor: var(
+    --stackbird-elements-editor-search-button-textColor,
+    var(--stackbird-elements-textSecondary)
+  );
 
   --cm-search-button-textColorHover: var(
     --stackbird-elements-editor-search-button-textColorHover,
@@ -84,8 +96,14 @@
   );
 
   --cm-search-input-backgroundColor: var(--stackbird-elements-editor-search-input-backgroundColor, transparent);
-  --cm-search-input-textColor: var(--stackbird-elements-editor-search-input-textColor, var(--stackbird-elements-textPrimary));
-  --cm-search-input-borderColor: var(--stackbird-elements-editor-search-input-borderColor, var(--stackbird-elements-borderColor));
+  --cm-search-input-textColor: var(
+    --stackbird-elements-editor-search-input-textColor,
+    var(--stackbird-elements-textPrimary)
+  );
+  --cm-search-input-borderColor: var(
+    --stackbird-elements-editor-search-input-borderColor,
+    var(--stackbird-elements-borderColor)
+  );
 
   --cm-search-input-borderColorFocused: var(
     --stackbird-elements-editor-search-input-borderColorFocused,
@@ -109,7 +127,10 @@
 
   --cm-tooltip-borderColor: var(--stackbird-elements-editor-tooltip-borderColor, var(--stackbird-elements-borderColor));
 
-  --cm-searchMatch-backgroundColor: var(--stackbird-elements-editor-searchMatch-backgroundColor, rgba(234, 92, 0, 0.33));
+  --cm-searchMatch-backgroundColor: var(
+    --stackbird-elements-editor-searchMatch-backgroundColor,
+    rgba(234, 92, 0, 0.33)
+  );
 }
 
 html[data-theme='light'] {

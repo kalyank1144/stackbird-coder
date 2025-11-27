@@ -162,7 +162,8 @@ export const TerminalTabs = memo(() => {
                         className={classNames(
                           'flex items-center text-sm cursor-pointer gap-1.5 px-3 py-2 h-full whitespace-nowrap rounded-full',
                           {
-                            'bg-stackbird-elements-terminals-buttonBackground text-stackbird-elements-textPrimary': isActive,
+                            'bg-stackbird-elements-terminals-buttonBackground text-stackbird-elements-textPrimary':
+                              isActive,
                             'bg-stackbird-elements-background-depth-2 text-stackbird-elements-textSecondary hover:bg-stackbird-elements-terminals-buttonBackground':
                               !isActive,
                           },

@@ -743,7 +743,9 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
             icon="i-ph:cursor-click"
             onClick={toggleInspectorMode}
             className={
-              isInspectorMode ? 'bg-stackbird-elements-background-depth-3 !text-stackbird-elements-item-contentAccent' : ''
+              isInspectorMode
+                ? 'bg-stackbird-elements-background-depth-3 !text-stackbird-elements-item-contentAccent'
+                : ''
             }
             title={isInspectorMode ? 'Disable Element Inspector' : 'Enable Element Inspector'}
           />

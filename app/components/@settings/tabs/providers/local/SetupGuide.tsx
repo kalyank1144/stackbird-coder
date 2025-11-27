@@ -54,7 +54,9 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
             </div>
             <div>
               <h3 className="text-lg font-semibold text-stackbird-elements-textPrimary">System Requirements</h3>
-              <p className="text-sm text-stackbird-elements-textSecondary">Recommended hardware for optimal performance</p>
+              <p className="text-sm text-stackbird-elements-textSecondary">
+                Recommended hardware for optimal performance
+              </p>
             </div>
           </div>
           <div className="grid md:grid-cols-3 gap-4 text-sm">
@@ -424,7 +426,9 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
                     <li>Set Network Interface to "0.0.0.0" for external access</li>
                     <li>
                       Alternatively, use CLI:{' '}
-                      <code className="bg-stackbird-elements-background-depth-4 px-1 rounded">lms server start --cors</code>
+                      <code className="bg-stackbird-elements-background-depth-4 px-1 rounded">
+                        lms server start --cors
+                      </code>
                     </li>
                   </ol>
                 </div>
@@ -631,7 +635,9 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
                     <Cable className="w-4 h-4 text-purple-500" />
                     <span className="font-medium text-stackbird-elements-textPrimary">KoboldAI</span>
                   </div>
-                  <p className="text-xs text-stackbird-elements-textSecondary">Focus on creative writing and storytelling</p>
+                  <p className="text-xs text-stackbird-elements-textSecondary">
+                    Focus on creative writing and storytelling
+                  </p>
                 </div>
               </div>
             </div>
@@ -643,21 +649,27 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
                     <Globe className="w-4 h-4 text-orange-500" />
                     <span className="font-medium text-stackbird-elements-textPrimary">OpenRouter</span>
                   </div>
-                  <p className="text-xs text-stackbird-elements-textSecondary">Access to 100+ models through unified API</p>
+                  <p className="text-xs text-stackbird-elements-textSecondary">
+                    Access to 100+ models through unified API
+                  </p>
                 </div>
                 <div className="p-3 rounded-lg bg-stackbird-elements-background-depth-3">
                   <div className="flex items-center gap-2 mb-1">
                     <Server className="w-4 h-4 text-red-500" />
                     <span className="font-medium text-stackbird-elements-textPrimary">Together AI</span>
                   </div>
-                  <p className="text-xs text-stackbird-elements-textSecondary">Fast inference with open-source models</p>
+                  <p className="text-xs text-stackbird-elements-textSecondary">
+                    Fast inference with open-source models
+                  </p>
                 </div>
                 <div className="p-3 rounded-lg bg-stackbird-elements-background-depth-3">
                   <div className="flex items-center gap-2 mb-1">
                     <Activity className="w-4 h-4 text-pink-500" />
                     <span className="font-medium text-stackbird-elements-textPrimary">Groq</span>
                   </div>
-                  <p className="text-xs text-stackbird-elements-textSecondary">Ultra-fast LPU inference for Llama models</p>
+                  <p className="text-xs text-stackbird-elements-textSecondary">
+                    Ultra-fast LPU inference for Llama models
+                  </p>
                 </div>
               </div>
             </div>

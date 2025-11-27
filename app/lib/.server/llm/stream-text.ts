@@ -46,7 +46,10 @@ function getCompletionTokenLimit(modelDetails: any): number {
 function sanitizeText(text: string): string {
   let sanitized = text.replace(/<div class=\\"__stackbirdThought__\\">.*?<\/div>/s, '');
   sanitized = sanitized.replace(/<think>.*?<\/think>/s, '');
-  sanitized = sanitized.replace(/<stackbirdAction type="file" filePath="package-lock\.json">[\s\S]*?<\/stackbirdAction>/g, '');
+  sanitized = sanitized.replace(
+    /<stackbirdAction type="file" filePath="package-lock\.json">[\s\S]*?<\/stackbirdAction>/g,
+    '',
+  );
 
   return sanitized.trim();
 }

@@ -20,7 +20,9 @@ export function GitHubUserProfile({ user, className = '' }: GitHubUserProfilePro
         <h4 className="text-sm font-medium text-stackbird-elements-textPrimary dark:text-stackbird-elements-textPrimary">
           {user.name || user.login}
         </h4>
-        <p className="text-sm text-stackbird-elements-textSecondary dark:text-stackbird-elements-textSecondary">@{user.login}</p>
+        <p className="text-sm text-stackbird-elements-textSecondary dark:text-stackbird-elements-textSecondary">
+          @{user.login}
+        </p>
         {user.bio && (
           <p className="text-xs text-stackbird-elements-textTertiary dark:text-stackbird-elements-textTertiary mt-1">
             {user.bio}

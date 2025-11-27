@@ -44,7 +44,10 @@ describe('StreamingMessageParser', () => {
       ['Foo bar <stackbirdA', 'Foo bar '],
       ['Foo bar <stackbirdArtifacs></stackbirdArtifact>', 'Foo bar <stackbirdArtifacs></stackbirdArtifact>'],
       ['Before <oltArtfiact>foo</stackbirdArtifact> After', 'Before <oltArtfiact>foo</stackbirdArtifact> After'],
-      ['Before <stackbirdArtifactt>foo</stackbirdArtifact> After', 'Before <stackbirdArtifactt>foo</stackbirdArtifact> After'],
+      [
+        'Before <stackbirdArtifactt>foo</stackbirdArtifact> After',
+        'Before <stackbirdArtifactt>foo</stackbirdArtifact> After',
+      ],
     ])('should correctly parse chunks and strip out stackbird artifacts (%#)', (input, expected) => {
       runTest(input, expected);
     });

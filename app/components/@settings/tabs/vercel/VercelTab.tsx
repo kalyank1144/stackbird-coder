@@ -466,7 +466,9 @@ export default function VercelTab() {
             {/* Project Health Overview */}
             {connection.stats?.projects?.length ? (
               <div className="mb-6">
-                <h4 className="text-sm font-medium text-stackbird-elements-textPrimary mb-2">Project Health Overview</h4>
+                <h4 className="text-sm font-medium text-stackbird-elements-textPrimary mb-2">
+                  Project Health Overview
+                </h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {(() => {
                     const healthyProjects = connection.stats.projects.filter(
@@ -747,7 +749,9 @@ export default function VercelTab() {
               </div>
 
               <div>
-                <label className="block text-sm text-stackbird-elements-textSecondary mb-2">Personal Access Token</label>
+                <label className="block text-sm text-stackbird-elements-textSecondary mb-2">
+                  Personal Access Token
+                </label>
                 <input
                   type="password"
                   value={connection.token}
