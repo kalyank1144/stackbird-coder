@@ -16,6 +16,9 @@
 
 .Chat {
   opacity: 1;
+  // When workbench is visible, constrain chat width
+  max-width: calc(100vw - var(--sidebar-width));
+  transition: max-width 0.3s ease-out;
 }
 
 .PromptEffectContainer {

@@ -405,8 +405,8 @@ export const ModelSelector = ({
 
   if (providerList.length === 0) {
     return (
-      <div className="mb-2 p-4 rounded-lg border border-stackbird-elements-borderColor bg-stackbird-elements-prompt-background text-stackbird-elements-textPrimary">
-        <p className="text-center">
+      <div className="mb-2 p-4 rounded-xl border border-slate-200 dark:border-slate-700/50 bg-white/50 dark:bg-slate-800/30 text-slate-600 dark:text-slate-300">
+        <p className="text-center text-sm">
           No providers are currently enabled. Please enable at least one provider in the settings to start using the
           chat.
         </p>
@@ -415,16 +415,16 @@ export const ModelSelector = ({
   }
 
   return (
-    <div className="flex gap-2 flex-col sm:flex-row">
+    <div className="flex gap-2 flex-col sm:flex-row mb-2">
       {/* Provider Combobox */}
       <div className="relative flex w-full" onKeyDown={handleProviderKeyDown} ref={providerDropdownRef}>
         <div
           className={classNames(
-            'w-full p-2 rounded-lg border border-stackbird-elements-borderColor',
-            'bg-stackbird-elements-prompt-background text-stackbird-elements-textPrimary',
-            'focus-within:outline-none focus-within:ring-2 focus-within:ring-stackbird-elements-focus',
-            'transition-all cursor-pointer',
-            isProviderDropdownOpen ? 'ring-2 ring-stackbird-elements-focus' : undefined,
+            'w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700/50',
+            'bg-white/50 dark:bg-slate-800/30 text-slate-700 dark:text-slate-200',
+            'focus-within:outline-none focus-within:ring-2 focus-within:ring-purple-500/50',
+            'transition-all cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50',
+            isProviderDropdownOpen ? 'ring-2 ring-purple-500/50' : undefined,
           )}
           onClick={() => setIsProviderDropdownOpen(!isProviderDropdownOpen)}
           onKeyDown={(e) => {
@@ -440,10 +440,10 @@ export const ModelSelector = ({
           tabIndex={0}
         >
           <div className="flex items-center justify-between">
-            <div className="truncate">{provider?.name || 'Select provider'}</div>
+            <div className="truncate text-sm font-medium">{provider?.name || 'Select provider'}</div>
             <div
               className={classNames(
-                'i-ph:caret-down w-4 h-4 text-stackbird-elements-textSecondary opacity-75',
+                'i-ph:caret-down w-4 h-4 text-slate-400 dark:text-slate-500 transition-transform',
                 isProviderDropdownOpen ? 'rotate-180' : undefined,
               )}
             />
@@ -452,7 +452,7 @@ export const ModelSelector = ({
 
         {isProviderDropdownOpen && (
           <div
-            className="absolute z-20 w-full mt-1 py-1 rounded-lg border border-stackbird-elements-borderColor bg-stackbird-elements-background-depth-2 shadow-lg"
+            className="absolute top-full z-20 w-full mt-1 py-1 rounded-xl border border-slate-200 dark:border-slate-700/50 bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/20 dark:shadow-slate-950/50"
             role="listbox"
             id="provider-listbox"
           >
@@ -463,12 +463,12 @@ export const ModelSelector = ({
                   type="text"
                   value={providerSearchQuery}
                   onChange={(e) => setProviderSearchQuery(e.target.value)}
-                  placeholder="Search providers... (⌘K to clear)"
+                  placeholder="Search providers..."
                   className={classNames(
-                    'w-full pl-8 pr-8 py-1.5 rounded-md text-sm',
-                    'bg-stackbird-elements-background-depth-2 border border-stackbird-elements-borderColor',
-                    'text-stackbird-elements-textPrimary placeholder:text-stackbird-elements-textTertiary',
-                    'focus:outline-none focus:ring-2 focus:ring-stackbird-elements-focus',
+                    'w-full pl-8 pr-8 py-2 rounded-lg text-sm',
+                    'bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50',
+                    'text-slate-700 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500',
+                    'focus:outline-none focus:ring-2 focus:ring-purple-500/50',
                     'transition-all',
                   )}
                   onClick={(e) => e.stopPropagation()}
@@ -476,7 +476,7 @@ export const ModelSelector = ({
                   aria-label="Search providers"
                 />
                 <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
-                  <span className="i-ph:magnifying-glass text-stackbird-elements-textTertiary" />
+                  <span className="i-ph:magnifying-glass text-slate-400 dark:text-slate-500" />
                 </div>
                 {providerSearchQuery && (
                   <button
@@ -485,10 +485,10 @@ export const ModelSelector = ({
                       e.stopPropagation();
                       clearProviderSearch();
                     }}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded hover:bg-stackbird-elements-background-depth-3 transition-colors"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                     aria-label="Clear search"
                   >
-                    <span className="i-ph:x text-stackbird-elements-textTertiary text-xs" />
+                    <span className="i-ph:x text-slate-400 dark:text-slate-500 text-xs" />
                   </button>
                 )}
               </div>
@@ -497,31 +497,19 @@ export const ModelSelector = ({
             <div
               className={classNames(
                 'max-h-60 overflow-y-auto',
-                'sm:scrollbar-none',
-                '[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2',
-                '[&::-webkit-scrollbar-thumb]:bg-stackbird-elements-borderColor',
-                '[&::-webkit-scrollbar-thumb]:hover:bg-stackbird-elements-borderColorHover',
+                '[&::-webkit-scrollbar]:w-1.5',
+                '[&::-webkit-scrollbar-thumb]:bg-slate-300 dark:[&::-webkit-scrollbar-thumb]:bg-slate-700',
                 '[&::-webkit-scrollbar-thumb]:rounded-full',
-                '[&::-webkit-scrollbar-track]:bg-stackbird-elements-background-depth-2',
-                '[&::-webkit-scrollbar-track]:rounded-full',
-                'sm:[&::-webkit-scrollbar]:w-1.5 sm:[&::-webkit-scrollbar]:h-1.5',
-                'sm:hover:[&::-webkit-scrollbar-thumb]:bg-stackbird-elements-borderColor/50',
-                'sm:hover:[&::-webkit-scrollbar-thumb:hover]:bg-stackbird-elements-borderColor',
-                'sm:[&::-webkit-scrollbar-track]:bg-transparent',
+                '[&::-webkit-scrollbar-track]:bg-transparent',
               )}
             >
               {filteredProviders.length === 0 ? (
                 <div className="px-3 py-3 text-sm">
-                  <div className="text-stackbird-elements-textTertiary mb-1">
+                  <div className="text-slate-400 dark:text-slate-500 mb-1">
                     {debouncedProviderSearchQuery
                       ? `No providers match "${debouncedProviderSearchQuery}"`
                       : 'No providers found'}
                   </div>
-                  {debouncedProviderSearchQuery && (
-                    <div className="text-xs text-stackbird-elements-textTertiary">
-                      Try searching for provider names like "OpenAI", "Anthropic", or "Google"
-                    </div>
-                  )}
                 </div>
               ) : (
                 filteredProviders.map((providerOption, index) => (
@@ -531,14 +519,14 @@ export const ModelSelector = ({
                     role="option"
                     aria-selected={provider?.name === providerOption.name}
                     className={classNames(
-                      'px-3 py-2 text-sm cursor-pointer',
-                      'hover:bg-stackbird-elements-background-depth-3',
-                      'text-stackbird-elements-textPrimary',
-                      'outline-none',
-                      provider?.name === providerOption.name || focusedProviderIndex === index
-                        ? 'bg-stackbird-elements-background-depth-2'
+                      'px-3 py-2.5 text-sm cursor-pointer',
+                      'hover:bg-slate-100 dark:hover:bg-slate-800',
+                      'text-slate-700 dark:text-slate-200',
+                      'outline-none transition-colors',
+                      provider?.name === providerOption.name
+                        ? 'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400'
                         : undefined,
-                      focusedProviderIndex === index ? 'ring-1 ring-inset ring-stackbird-elements-focus' : undefined,
+                      focusedProviderIndex === index ? 'ring-1 ring-inset ring-purple-500/50' : undefined,
                     )}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -559,11 +547,16 @@ export const ModelSelector = ({
                     }}
                     tabIndex={focusedProviderIndex === index ? 0 : -1}
                   >
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: (providerOption as any).highlightedName || providerOption.name,
-                      }}
-                    />
+                    <div className="flex items-center justify-between">
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: (providerOption as any).highlightedName || providerOption.name,
+                        }}
+                      />
+                      {provider?.name === providerOption.name && (
+                        <span className="i-ph:check text-purple-500 text-sm" />
+                      )}
+                    </div>
                   </div>
                 ))
               )}
@@ -576,11 +569,11 @@ export const ModelSelector = ({
       <div className="relative flex w-full min-w-[70%]" onKeyDown={handleModelKeyDown} ref={modelDropdownRef}>
         <div
           className={classNames(
-            'w-full p-2 rounded-lg border border-stackbird-elements-borderColor',
-            'bg-stackbird-elements-prompt-background text-stackbird-elements-textPrimary',
-            'focus-within:outline-none focus-within:ring-2 focus-within:ring-stackbird-elements-focus',
-            'transition-all cursor-pointer',
-            isModelDropdownOpen ? 'ring-2 ring-stackbird-elements-focus' : undefined,
+            'w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700/50',
+            'bg-white/50 dark:bg-slate-800/30 text-slate-700 dark:text-slate-200',
+            'focus-within:outline-none focus-within:ring-2 focus-within:ring-purple-500/50',
+            'transition-all cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50',
+            isModelDropdownOpen ? 'ring-2 ring-purple-500/50' : undefined,
           )}
           onClick={() => setIsModelDropdownOpen(!isModelDropdownOpen)}
           onKeyDown={(e) => {
@@ -596,10 +589,12 @@ export const ModelSelector = ({
           tabIndex={0}
         >
           <div className="flex items-center justify-between">
-            <div className="truncate">{modelList.find((m) => m.name === model)?.label || 'Select model'}</div>
+            <div className="truncate text-sm font-medium">
+              {modelList.find((m) => m.name === model)?.label || 'Select model'}
+            </div>
             <div
               className={classNames(
-                'i-ph:caret-down w-4 h-4 text-stackbird-elements-textSecondary opacity-75',
+                'i-ph:caret-down w-4 h-4 text-slate-400 dark:text-slate-500 transition-transform',
                 isModelDropdownOpen ? 'rotate-180' : undefined,
               )}
             />
@@ -608,7 +603,7 @@ export const ModelSelector = ({
 
         {isModelDropdownOpen && (
           <div
-            className="absolute z-10 w-full mt-1 py-1 rounded-lg border border-stackbird-elements-borderColor bg-stackbird-elements-background-depth-2 shadow-lg"
+            className="absolute top-full z-10 w-full mt-1 py-1 rounded-xl border border-slate-200 dark:border-slate-700/50 bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/20 dark:shadow-slate-950/50"
             role="listbox"
             id="model-listbox"
           >
@@ -623,18 +618,18 @@ export const ModelSelector = ({
                       setShowFreeModelsOnly(!showFreeModelsOnly);
                     }}
                     className={classNames(
-                      'flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium transition-all',
-                      'hover:bg-stackbird-elements-background-depth-3',
+                      'flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all',
+                      'hover:bg-slate-100 dark:hover:bg-slate-800',
                       showFreeModelsOnly
-                        ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
-                        : 'bg-stackbird-elements-background-depth-3 text-stackbird-elements-textSecondary border border-stackbird-elements-borderColor',
+                        ? 'bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-500/30'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700',
                     )}
                   >
                     <span className="i-ph:gift text-xs" />
                     Free models only
                   </button>
                   {showFreeModelsOnly && (
-                    <span className="text-xs text-stackbird-elements-textTertiary">
+                    <span className="text-xs text-slate-500 dark:text-slate-400">
                       {filteredModels.length} free model{filteredModels.length !== 1 ? 's' : ''}
                     </span>
                   )}
@@ -643,7 +638,7 @@ export const ModelSelector = ({
 
               {/* Search Result Count */}
               {debouncedModelSearchQuery && filteredModels.length > 0 && (
-                <div className="text-xs text-stackbird-elements-textTertiary px-1">
+                <div className="text-xs text-slate-500 dark:text-slate-400 px-1">
                   {filteredModels.length} model{filteredModels.length !== 1 ? 's' : ''} found
                   {filteredModels.length > 5 && ' (showing best matches)'}
                 </div>
@@ -656,12 +651,12 @@ export const ModelSelector = ({
                   type="text"
                   value={modelSearchQuery}
                   onChange={(e) => setModelSearchQuery(e.target.value)}
-                  placeholder="Search models... (⌘K to clear)"
+                  placeholder="Search models..."
                   className={classNames(
-                    'w-full pl-8 pr-8 py-1.5 rounded-md text-sm',
-                    'bg-stackbird-elements-background-depth-2 border border-stackbird-elements-borderColor',
-                    'text-stackbird-elements-textPrimary placeholder:text-stackbird-elements-textTertiary',
-                    'focus:outline-none focus:ring-2 focus:ring-stackbird-elements-focus',
+                    'w-full pl-8 pr-8 py-2 rounded-lg text-sm',
+                    'bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50',
+                    'text-slate-700 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500',
+                    'focus:outline-none focus:ring-2 focus:ring-purple-500/50',
                     'transition-all',
                   )}
                   onClick={(e) => e.stopPropagation()}
@@ -669,7 +664,7 @@ export const ModelSelector = ({
                   aria-label="Search models"
                 />
                 <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
-                  <span className="i-ph:magnifying-glass text-stackbird-elements-textTertiary" />
+                  <span className="i-ph:magnifying-glass text-slate-400 dark:text-slate-500" />
                 </div>
                 {modelSearchQuery && (
                   <button
@@ -678,10 +673,10 @@ export const ModelSelector = ({
                       e.stopPropagation();
                       clearModelSearch();
                     }}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded hover:bg-stackbird-elements-background-depth-3 transition-colors"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                     aria-label="Clear search"
                   >
-                    <span className="i-ph:x text-stackbird-elements-textTertiary text-xs" />
+                    <span className="i-ph:x text-slate-400 dark:text-slate-500 text-xs" />
                   </button>
                 )}
               </div>
@@ -690,29 +685,22 @@ export const ModelSelector = ({
             <div
               className={classNames(
                 'max-h-60 overflow-y-auto',
-                'sm:scrollbar-none',
-                '[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2',
-                '[&::-webkit-scrollbar-thumb]:bg-stackbird-elements-borderColor',
-                '[&::-webkit-scrollbar-thumb]:hover:bg-stackbird-elements-borderColorHover',
+                '[&::-webkit-scrollbar]:w-1.5',
+                '[&::-webkit-scrollbar-thumb]:bg-slate-300 dark:[&::-webkit-scrollbar-thumb]:bg-slate-700',
                 '[&::-webkit-scrollbar-thumb]:rounded-full',
-                '[&::-webkit-scrollbar-track]:bg-stackbird-elements-background-depth-2',
-                '[&::-webkit-scrollbar-track]:rounded-full',
-                'sm:[&::-webkit-scrollbar]:w-1.5 sm:[&::-webkit-scrollbar]:h-1.5',
-                'sm:hover:[&::-webkit-scrollbar-thumb]:bg-stackbird-elements-borderColor/50',
-                'sm:hover:[&::-webkit-scrollbar-thumb:hover]:bg-stackbird-elements-borderColor',
-                'sm:[&::-webkit-scrollbar-track]:bg-transparent',
+                '[&::-webkit-scrollbar-track]:bg-transparent',
               )}
             >
               {modelLoading === 'all' || modelLoading === provider?.name ? (
                 <div className="px-3 py-3 text-sm">
-                  <div className="flex items-center gap-2 text-stackbird-elements-textTertiary">
+                  <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
                     <span className="i-ph:spinner animate-spin" />
                     Loading models...
                   </div>
                 </div>
               ) : filteredModels.length === 0 ? (
                 <div className="px-3 py-3 text-sm">
-                  <div className="text-stackbird-elements-textTertiary mb-1">
+                  <div className="text-slate-500 dark:text-slate-400 mb-1">
                     {debouncedModelSearchQuery
                       ? `No models match "${debouncedModelSearchQuery}"${showFreeModelsOnly ? ' (free only)' : ''}`
                       : showFreeModelsOnly
@@ -720,12 +708,12 @@ export const ModelSelector = ({
                         : 'No models available'}
                   </div>
                   {debouncedModelSearchQuery && (
-                    <div className="text-xs text-stackbird-elements-textTertiary">
+                    <div className="text-xs text-slate-400 dark:text-slate-500">
                       Try searching for model names, context sizes (e.g., "128k", "1M"), or capabilities
                     </div>
                   )}
                   {showFreeModelsOnly && !debouncedModelSearchQuery && (
-                    <div className="text-xs text-stackbird-elements-textTertiary">
+                    <div className="text-xs text-slate-400 dark:text-slate-500">
                       Try disabling the "Free models only" filter to see all available models
                     </div>
                   )}
@@ -738,14 +726,12 @@ export const ModelSelector = ({
                     role="option"
                     aria-selected={model === modelOption.name}
                     className={classNames(
-                      'px-3 py-2 text-sm cursor-pointer',
-                      'hover:bg-stackbird-elements-background-depth-3',
-                      'text-stackbird-elements-textPrimary',
-                      'outline-none',
-                      model === modelOption.name || focusedModelIndex === index
-                        ? 'bg-stackbird-elements-background-depth-2'
-                        : undefined,
-                      focusedModelIndex === index ? 'ring-1 ring-inset ring-stackbird-elements-focus' : undefined,
+                      'px-3 py-2.5 text-sm cursor-pointer',
+                      'hover:bg-slate-100 dark:hover:bg-slate-800',
+                      'text-slate-700 dark:text-slate-200',
+                      'outline-none transition-colors',
+                      model === modelOption.name ? 'bg-purple-50 dark:bg-purple-500/10' : undefined,
+                      focusedModelIndex === index ? 'ring-1 ring-inset ring-purple-500/50' : undefined,
                     )}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -758,7 +744,7 @@ export const ModelSelector = ({
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex-1 min-w-0">
-                        <div className="truncate">
+                        <div className="truncate font-medium">
                           <span
                             dangerouslySetInnerHTML={{
                               __html: (modelOption as any).highlightedLabel || modelOption.label,
@@ -766,7 +752,7 @@ export const ModelSelector = ({
                           />
                         </div>
                         <div className="flex items-center gap-2 mt-0.5">
-                          <span className="text-xs text-stackbird-elements-textTertiary">
+                          <span className="text-xs text-slate-500 dark:text-slate-400">
                             {formatContextSize(modelOption.maxTokenAllowed)} tokens
                           </span>
                           {debouncedModelSearchQuery && (modelOption as any).searchScore > 70 && (
@@ -776,12 +762,12 @@ export const ModelSelector = ({
                           )}
                         </div>
                       </div>
-                      <div className="flex items-center gap-1 ml-2">
+                      <div className="flex items-center gap-1.5 ml-2">
                         {isModelLikelyFree(modelOption, provider?.name) && (
                           <span className="i-ph:gift text-xs text-purple-400" title="Free model" />
                         )}
                         {model === modelOption.name && (
-                          <span className="i-ph:check text-xs text-green-500" title="Selected" />
+                          <span className="i-ph:check text-sm text-purple-500" title="Selected" />
                         )}
                       </div>
                     </div>

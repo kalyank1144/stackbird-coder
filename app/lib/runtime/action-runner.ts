@@ -254,7 +254,7 @@ export class ActionRunner {
     }
   }
 
-  async #runShellAction(action: ActionState) {
+  async #runShellAction(action: ActionState, retryCount = 0): Promise<void> {
     if (action.type !== 'shell') {
       unreachable('Expected shell action');
     }
@@ -266,19 +266,65 @@ export class ActionRunner {
       unreachable('Shell terminal not found');
     }
 
-    // Pre-validate command for common issues
-    const validationResult = await this.#validateShellCommand(action.content);
+    // Handle multi-line commands by joining them with && for sequential execution
+    let commandToRun = action.content.trim();
 
-    if (validationResult.shouldModify && validationResult.modifiedCommand) {
-      logger.debug(`Modified command: ${action.content} -> ${validationResult.modifiedCommand}`);
-      action.content = validationResult.modifiedCommand;
+    // Check if command contains multiple lines
+    if (commandToRun.includes('\n')) {
+      const lines = commandToRun
+        .split('\n')
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0 && !line.startsWith('#')); // Filter empty lines and comments
+
+      if (lines.length > 1) {
+        /*
+         * Join commands with && for sequential execution
+         * This ensures each command completes before the next one starts
+         */
+        commandToRun = lines.join(' && ');
+        logger.debug(`[Shell] Multi-line command detected. Joined ${lines.length} commands with &&`);
+      } else if (lines.length === 1) {
+        commandToRun = lines[0];
+      }
     }
 
-    const resp = await shell.executeCommand(this.runnerId.get(), action.content, () => {
+    // For npm commands, ensure npm is available first
+    if (commandToRun.includes('npm ') && retryCount === 0) {
+      logger.debug('[Shell] Checking npm availability before running npm command...');
+
+      // Wait a bit for WebContainer to fully initialize npm
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
+
+    // Pre-validate command for common issues
+    const validationResult = await this.#validateShellCommand(commandToRun);
+
+    if (validationResult.shouldModify && validationResult.modifiedCommand) {
+      logger.debug(`Modified command: ${commandToRun} -> ${validationResult.modifiedCommand}`);
+      commandToRun = validationResult.modifiedCommand;
+    }
+
+    // Update action content with the processed command
+    action.content = commandToRun;
+
+    const resp = await shell.executeCommand(this.runnerId.get(), commandToRun, () => {
       logger.debug(`[${action.type}]:Aborting Action\n\n`, action);
       action.abort();
     });
     logger.debug(`${action.type} Shell Response: [exit code:${resp?.exitCode}]`);
+
+    // Check for npm ENOENT error and retry with longer delay
+    if (resp?.exitCode != 0 && resp?.output?.includes('ENOENT') && action.content.includes('npm') && retryCount < 3) {
+      const delay = (retryCount + 1) * 2000; // Increasing delay: 2s, 4s, 6s
+      logger.debug(
+        `[${action.type}] npm ENOENT detected, waiting ${delay}ms and retrying (attempt ${retryCount + 1}/3)...`,
+      );
+      await new Promise((resolve) => setTimeout(resolve, delay));
+
+      await this.#runShellAction(action, retryCount + 1);
+
+      return;
+    }
 
     if (resp?.exitCode != 0) {
       const enhancedError = this.#createEnhancedShellError(action.content, resp?.exitCode, resp?.output);

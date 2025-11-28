@@ -65,11 +65,13 @@ export const Messages = forwardRef<HTMLDivElement, MessagesProps>(
               return (
                 <div
                   key={index}
-                  className={classNames('flex gap-4 py-3 w-full rounded-lg', {
-                    'mt-4': !isFirst,
+                  className={classNames('flex w-full', {
+                    'mt-6': !isFirst,
+                    'justify-end': isUserMessage,
+                    'justify-start': !isUserMessage,
                   })}
                 >
-                  <div className="grid grid-col-1 w-full">
+                  <div className={classNames('w-full', { 'flex justify-end': isUserMessage })}>
                     {isUserMessage ? (
                       <UserMessage content={content} parts={parts} />
                     ) : (
@@ -94,7 +96,13 @@ export const Messages = forwardRef<HTMLDivElement, MessagesProps>(
             })
           : null}
         {isStreaming && (
-          <div className="text-center w-full  text-stackbird-elements-item-contentAccent i-svg-spinners:3-dots-fade text-4xl mt-4"></div>
+          <div className="flex items-center justify-center gap-2 py-4 mt-4">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 animate-pulse">
+              <span className="i-ph:bird-fill text-white text-sm" />
+            </div>
+            <span className="text-slate-500 dark:text-slate-400 text-sm">Thinking...</span>
+            <span className="i-svg-spinners:3-dots-fade text-purple-500 text-xl" />
+          </div>
         )}
       </div>
     );

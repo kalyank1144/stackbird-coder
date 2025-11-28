@@ -70,7 +70,11 @@ export default async function handleRequest(
 
   responseHeaders.set('Content-Type', 'text/html');
 
-  responseHeaders.set('Cross-Origin-Embedder-Policy', 'require-corp');
+  /*
+   * Use 'credentialless' for COEP to match WebContainer boot configuration
+   * This allows WebContainer to work without requiring CORP headers on all resources
+   */
+  responseHeaders.set('Cross-Origin-Embedder-Policy', 'credentialless');
   responseHeaders.set('Cross-Origin-Opener-Policy', 'same-origin');
 
   return new Response(body, {

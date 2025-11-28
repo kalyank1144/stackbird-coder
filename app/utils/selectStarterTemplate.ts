@@ -2,6 +2,7 @@ import ignore from 'ignore';
 import type { ProviderInfo } from '~/types/model';
 import type { Template } from '~/types/template';
 import { STARTER_TEMPLATES } from './constants';
+import { getBundledTemplate, isTemplateBundled } from '~/lib/templates';
 
 const starterTemplateSelectionPrompt = (templates: Template[]) => `
 You are an experienced developer who helps people choose the best starter template for their projects.
@@ -112,25 +113,35 @@ export const selectStarterTemplate = async (options: { message: string; model: s
   }
 };
 
+/**
+ * Fetch template files from GitHub API
+ * Used as fallback when template is not bundled locally
+ */
 const getGitHubRepoContent = async (repoName: string): Promise<{ name: string; path: string; content: string }[]> => {
   try {
-    // Instead of directly fetching from GitHub, use our own API endpoint as a proxy
+    // Use our API endpoint as a proxy to fetch from GitHub
     const response = await fetch(`/api/github-template?repo=${encodeURIComponent(repoName)}`);
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorData = (await response.json().catch(() => ({}))) as { details?: string };
+      throw new Error(errorData.details || `HTTP error! status: ${response.status}`);
     }
 
-    // Our API will return the files in the format we need
     const files = (await response.json()) as any;
 
     return files;
   } catch (error) {
-    console.error('Error fetching release contents:', error);
+    console.error('Error fetching template from GitHub:', error);
     throw error;
   }
 };
 
+/**
+ * Get template files - uses hybrid approach:
+ * 1. First checks if template is bundled locally (instant, no network)
+ * 2. Falls back to GitHub fetch if not bundled
+ * 3. Returns null and logs warning if both fail
+ */
 export async function getTemplates(templateName: string, title?: string) {
   const template = STARTER_TEMPLATES.find((t) => t.name == templateName);
 
@@ -138,8 +149,30 @@ export async function getTemplates(templateName: string, title?: string) {
     return null;
   }
 
-  const githubRepo = template.githubRepo;
-  const files = await getGitHubRepoContent(githubRepo);
+  let files: { name: string; path: string; content: string }[];
+
+  // Check if template is bundled locally (instant, no network request)
+  if (isTemplateBundled(templateName)) {
+    const bundledFiles = getBundledTemplate(templateName);
+
+    if (bundledFiles) {
+      files = bundledFiles;
+    } else {
+      // This shouldn't happen, but fallback to GitHub if it does
+      console.warn(`Bundled template ${templateName} returned null, falling back to GitHub`);
+      files = await getGitHubRepoContent(template.githubRepo);
+    }
+  } else {
+    // Template not bundled locally, fetch from GitHub
+    try {
+      files = await getGitHubRepoContent(template.githubRepo);
+    } catch (error) {
+      // GitHub fetch failed - return null to use blank template
+      console.error(`Failed to fetch template ${templateName} from GitHub:`, error);
+
+      return null;
+    }
+  }
 
   let filteredFiles = files;
 

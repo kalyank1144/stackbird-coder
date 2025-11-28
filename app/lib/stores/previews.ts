@@ -167,11 +167,35 @@ export class PreviewsStore {
   }
 
   async #init() {
+    console.log('[PreviewsStore] Initializing preview store, waiting for WebContainer...');
+
     const webcontainer = await this.#webcontainer;
+    console.log('[PreviewsStore] WebContainer ready, setting up event listeners');
 
     // Listen for server ready events
     webcontainer.on('server-ready', (port, url) => {
-      console.log('[Preview] Server ready on port:', port, url);
+      console.log('[PreviewsStore] server-ready event:', { port, url });
+      console.log('[PreviewsStore] Current previews before update:', this.previews.get());
+
+      // Create preview info for server-ready event
+      let previewInfo = this.#availablePreviews.get(port);
+
+      if (!previewInfo) {
+        previewInfo = { port, ready: true, baseUrl: url };
+        this.#availablePreviews.set(port, previewInfo);
+
+        const previews = this.previews.get();
+        previews.push(previewInfo);
+        this.previews.set([...previews]);
+        console.log('[PreviewsStore] Created new preview info from server-ready');
+      } else {
+        previewInfo.ready = true;
+        previewInfo.baseUrl = url;
+        this.previews.set([...this.previews.get()]);
+        console.log('[PreviewsStore] Updated existing preview info from server-ready');
+      }
+
+      console.log('[PreviewsStore] Current previews after server-ready:', this.previews.get());
       this.broadcastUpdate(url);
 
       // Initial storage sync when preview is ready
@@ -180,9 +204,12 @@ export class PreviewsStore {
 
     // Listen for port events
     webcontainer.on('port', (port, type, url) => {
+      console.log('[PreviewsStore] port event:', { port, type, url });
+
       let previewInfo = this.#availablePreviews.get(port);
 
       if (type === 'close' && previewInfo) {
+        console.log('[PreviewsStore] Closing port:', port);
         this.#availablePreviews.delete(port);
         this.previews.set(this.previews.get().filter((preview) => preview.port !== port));
 
@@ -195,17 +222,21 @@ export class PreviewsStore {
         previewInfo = { port, ready: type === 'open', baseUrl: url };
         this.#availablePreviews.set(port, previewInfo);
         previews.push(previewInfo);
+        console.log('[PreviewsStore] Created new preview from port event');
       }
 
       previewInfo.ready = type === 'open';
       previewInfo.baseUrl = url;
 
       this.previews.set([...previews]);
+      console.log('[PreviewsStore] Current previews after port event:', this.previews.get());
 
       if (type === 'open') {
         this.broadcastUpdate(url);
       }
     });
+
+    console.log('[PreviewsStore] Event listeners registered');
   }
 
   // Helper to extract preview ID from URL

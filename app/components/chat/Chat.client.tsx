@@ -28,6 +28,7 @@ import type { ElementInfo } from '~/components/workbench/Inspector';
 import type { TextUIPart, FileUIPart, Attachment } from '@ai-sdk/ui-utils';
 import { useMCPStore } from '~/lib/stores/mcp';
 import type { LlmErrorAlertType } from '~/types/actions';
+import { isAuthenticated, openAuthModal } from '~/lib/stores/auth';
 
 const logger = createScopedLogger('Chat');
 
@@ -393,6 +394,12 @@ export const ChatImpl = memo(
         return;
       }
 
+      // Check if user is authenticated before sending message
+      if (!isAuthenticated.get()) {
+        openAuthModal('login');
+        return;
+      }
+
       if (isLoading) {
         abort();
         return;
@@ -422,9 +429,12 @@ export const ChatImpl = memo(
           if (template !== 'blank') {
             const temResp = await getTemplates(template, title).catch((e) => {
               if (e.message.includes('rate limit')) {
-                toast.warning('Rate limit exceeded. Skipping starter template\n Continuing with blank template');
+                toast.warning('Rate limit exceeded. Skipping starter template\nContinuing with blank template');
+              } else if (e.message.includes('not found') || e.message.includes('404')) {
+                toast.warning(`Template "${template}" not available\nContinuing with blank template`);
               } else {
-                toast.warning('Failed to import starter template\n Continuing with blank template');
+                toast.warning('Failed to import starter template\nContinuing with blank template');
+                console.error('[Templates] Error:', e.message);
               }
 
               return null;

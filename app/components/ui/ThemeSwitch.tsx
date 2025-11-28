@@ -18,7 +18,7 @@ export const ThemeSwitch = memo(({ className }: ThemeSwitchProps) => {
   return (
     domLoaded && (
       <IconButton
-        className={className}
+        className={`text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all ${className || ''}`}
         icon={theme === 'dark' ? 'i-ph-sun-dim-duotone' : 'i-ph-moon-stars-duotone'}
         size="xl"
         title="Toggle Theme"

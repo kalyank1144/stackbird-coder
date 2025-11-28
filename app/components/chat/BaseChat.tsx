@@ -33,6 +33,7 @@ import { ChatBox } from './ChatBox';
 import type { DesignScheme } from '~/types/design-scheme';
 import type { ElementInfo } from '~/components/workbench/Inspector';
 import LlmErrorAlert from './LLMApiAlert';
+import { workbenchStore } from '~/lib/stores/workbench';
 
 const TEXTAREA_MIN_HEIGHT = 76;
 
@@ -144,6 +145,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     const [progressAnnotations, setProgressAnnotations] = useState<ProgressAnnotation[]>([]);
     const expoUrl = useStore(expoUrlAtom);
     const [qrModalOpen, setQrModalOpen] = useState(false);
+    const showWorkbench = useStore(workbenchStore.showWorkbench);
 
     useEffect(() => {
       if (expoUrl) {
@@ -217,6 +219,23 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
           .then((data) => {
             const typedData = data as { modelList: ModelInfo[] };
             setModelList(typedData.modelList);
+
+            // Validate the selected model exists in the list, otherwise reset to default
+            if (model && typedData.modelList.length > 0) {
+              const modelExists = typedData.modelList.some((m) => m.name === model);
+
+              if (!modelExists) {
+                // Find a model from the current provider or use the first available
+                const providerModels = typedData.modelList.filter((m) => m.provider === provider?.name);
+                const newModel = providerModels[0]?.name || typedData.modelList[0]?.name;
+
+                if (newModel && setModel) {
+                  console.log(`Model "${model}" not found, switching to "${newModel}"`);
+                  setModel(newModel);
+                  Cookies.set('selectedModel', newModel, { expires: 30 });
+                }
+              }
+            }
           })
           .catch((error) => {
             console.error('Error fetching model list:', error);
@@ -342,20 +361,60 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     const baseChat = (
       <div
         ref={ref}
-        className={classNames(styles.BaseChat, 'relative flex h-full w-full overflow-hidden')}
+        className={classNames(
+          styles.BaseChat,
+          'relative flex h-full w-full overflow-hidden bg-gradient-to-br from-slate-50 via-white to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-purple-950/20',
+        )}
         data-chat-visible={showChat}
+        data-workbench-visible={showWorkbench}
       >
         <ClientOnly>{() => <Menu />}</ClientOnly>
-        <div className="flex flex-col lg:flex-row overflow-y-auto w-full h-full">
-          <div className={classNames(styles.Chat, 'flex flex-col flex-grow lg:min-w-[var(--chat-min-width)] h-full')}>
+        {/* Main content area with proper sidebar offset */}
+        <div
+          className={classNames(
+            'flex flex-col lg:flex-row overflow-y-auto h-full transition-all duration-300 ml-[72px]',
+            showWorkbench ? 'w-[var(--chat-min-width)]' : 'w-[calc(100%-72px)]',
+          )}
+        >
+          <div className={classNames(styles.Chat, 'flex flex-col flex-grow h-full relative')}>
             {!chatStarted && (
-              <div id="intro" className="mt-[16vh] max-w-2xl mx-auto text-center px-4 lg:px-0">
-                <h1 className="text-3xl lg:text-6xl font-bold text-stackbird-elements-textPrimary mb-4 animate-fade-in">
-                  Where ideas begin
+              <div id="intro" className="mt-[10vh] max-w-3xl mx-auto text-center px-4 lg:px-0">
+                {/* Animated Logo */}
+                <div className="mb-8 relative">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-32 h-32 rounded-full bg-gradient-to-r from-purple-500/20 to-indigo-500/20 blur-2xl animate-pulse" />
+                  </div>
+                  <div className="relative w-20 h-20 mx-auto rounded-3xl bg-gradient-to-br from-purple-500 via-purple-600 to-indigo-600 flex items-center justify-center shadow-2xl shadow-purple-500/30 transform hover:scale-105 transition-transform duration-300">
+                    <span className="i-ph:bird-fill text-4xl text-white drop-shadow-lg" />
+                  </div>
+                </div>
+                {/* Title */}
+                <h1 className="text-4xl lg:text-6xl font-bold mb-4">
+                  <span className="bg-gradient-to-r from-slate-800 via-purple-700 to-indigo-700 dark:from-white dark:via-purple-300 dark:to-indigo-300 bg-clip-text text-transparent">
+                    Build anything
+                  </span>
                 </h1>
-                <p className="text-md lg:text-xl mb-8 text-stackbird-elements-textSecondary animate-fade-in animation-delay-200">
-                  Bring ideas to life in seconds or get help on existing projects.
+                <p className="text-lg lg:text-xl mb-2 text-slate-600 dark:text-slate-300 font-medium">
+                  with AI-powered code generation
                 </p>
+                <p className="text-base text-slate-500 dark:text-slate-400 max-w-lg mx-auto mb-8">
+                  Describe your idea in natural language and watch it come to life. No coding experience required.
+                </p>
+                {/* Feature Pills */}
+                <div className="flex flex-wrap justify-center gap-2 mb-6">
+                  <span className="px-3 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 text-sm font-medium border border-purple-200 dark:border-purple-700/50">
+                    <span className="i-ph:lightning-fill mr-1" />
+                    Fast Generation
+                  </span>
+                  <span className="px-3 py-1.5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 text-sm font-medium border border-indigo-200 dark:border-indigo-700/50">
+                    <span className="i-ph:code mr-1" />
+                    Clean Code
+                  </span>
+                  <span className="px-3 py-1.5 rounded-full bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300 text-sm font-medium border border-violet-200 dark:border-violet-700/50">
+                    <span className="i-ph:eye mr-1" />
+                    Live Preview
+                  </span>
+                </div>
               </div>
             )}
             <StickToBottom

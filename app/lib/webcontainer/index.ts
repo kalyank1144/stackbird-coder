@@ -23,6 +23,7 @@ if (!import.meta.env.SSR) {
     import.meta.hot?.data.webcontainer ??
     Promise.resolve()
       .then(() => {
+        console.log('[WebContainer] Booting WebContainer...');
         return WebContainer.boot({
           coep: 'credentialless',
           workdirName: WORK_DIR_NAME,
@@ -30,6 +31,7 @@ if (!import.meta.env.SSR) {
         });
       })
       .then(async (webcontainer) => {
+        console.log('[WebContainer] WebContainer booted successfully');
         webcontainerContext.loaded = true;
 
         const { workbenchStore } = await import('~/lib/stores/workbench');
@@ -37,6 +39,17 @@ if (!import.meta.env.SSR) {
         const response = await fetch('/inspector-script.js');
         const inspectorScript = await response.text();
         await webcontainer.setPreviewScript(inspectorScript);
+        console.log('[WebContainer] Preview script set');
+
+        // Add server-ready listener for debugging
+        webcontainer.on('server-ready', (port, url) => {
+          console.log('[WebContainer] server-ready event received:', { port, url });
+        });
+
+        // Add port listener for debugging
+        webcontainer.on('port', (port, type, url) => {
+          console.log('[WebContainer] port event received:', { port, type, url });
+        });
 
         // Listen for preview errors
         webcontainer.on('preview-message', (message) => {

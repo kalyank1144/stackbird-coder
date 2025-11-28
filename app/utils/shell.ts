@@ -308,7 +308,9 @@ export class StackbirdShell {
       const [, osc, , , code] = text.match(/\x1b\]654;([^\x07=]+)=?((-?\d+):(\d+))?\x07/) || [];
 
       if (osc === 'exit') {
-        exitCode = parseInt(code, 10);
+        // Handle undefined or NaN exit code - default to 0 (success)
+        const parsedCode = parseInt(code, 10);
+        exitCode = isNaN(parsedCode) ? 0 : parsedCode;
       }
 
       if (osc === waitCode) {

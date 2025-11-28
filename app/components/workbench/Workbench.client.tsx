@@ -12,7 +12,6 @@ import {
   type OnChangeCallback as OnEditorChange,
   type OnScrollCallback as OnEditorScroll,
 } from '~/components/editor/codemirror/CodeMirrorEditor';
-import { IconButton } from '~/components/ui/IconButton';
 import { Slider, type SliderOptions } from '~/components/ui/Slider';
 import { workbenchStore, type WorkbenchViewType } from '~/lib/stores/workbench';
 import { classNames } from '~/utils/classNames';
@@ -382,102 +381,124 @@ export const Workbench = memo(
         >
           <div
             className={classNames(
-              'fixed top-[calc(var(--header-height)+1.2rem)] bottom-6 w-[var(--workbench-inner-width)] z-0 transition-[left,width] duration-200 stackbird-ease-cubic-bezier',
+              'fixed top-[calc(var(--header-height)+1rem)] bottom-4 w-[var(--workbench-inner-width)] z-0 transition-[left,width] duration-300 ease-out',
               {
-                'w-full': isSmallViewport,
-                'left-0': showWorkbench && isSmallViewport,
-                'left-[var(--workbench-left)]': showWorkbench,
+                'w-[calc(100%-var(--sidebar-width))]': isSmallViewport,
+                'left-[var(--sidebar-width)]': showWorkbench && isSmallViewport,
+                'left-[max(var(--workbench-left),var(--sidebar-width))]': showWorkbench && !isSmallViewport,
                 'left-[100%]': !showWorkbench,
               },
             )}
           >
-            <div className="absolute inset-0 px-2 lg:px-4">
-              <div className="h-full flex flex-col bg-stackbird-elements-background-depth-2 border border-stackbird-elements-borderColor shadow-sm rounded-lg overflow-hidden">
-                <div className="flex items-center px-3 py-2 border-b border-stackbird-elements-borderColor gap-1.5">
+            <div className="absolute inset-0 px-2 lg:px-3">
+              {/* Modern Glassmorphism Container */}
+              <div className="h-full flex flex-col bg-white/80 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 shadow-2xl shadow-slate-900/10 dark:shadow-black/30 rounded-2xl overflow-hidden">
+                {/* Header Bar with gradient */}
+                <div className="flex items-center px-4 py-3 border-b border-slate-200/50 dark:border-slate-700/50 bg-gradient-to-r from-slate-50/80 to-white/80 dark:from-slate-800/80 dark:to-slate-900/80 gap-2">
+                  {/* Sidebar Toggle */}
                   <button
-                    className={`${showChat ? 'i-ph:sidebar-simple-fill' : 'i-ph:sidebar-simple'} text-lg text-stackbird-elements-textSecondary mr-1`}
+                    className={classNames(
+                      'w-8 h-8 flex items-center justify-center rounded-lg transition-all',
+                      'hover:bg-slate-100 dark:hover:bg-slate-800',
+                      'text-slate-500 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400',
+                    )}
                     disabled={!canHideChat || isSmallViewport}
                     onClick={() => {
                       if (canHideChat) {
                         chatStore.setKey('showChat', !showChat);
                       }
                     }}
-                  />
+                  >
+                    <span className={`${showChat ? 'i-ph:sidebar-simple-fill' : 'i-ph:sidebar-simple'} text-lg`} />
+                  </button>
+
+                  {/* View Slider */}
                   <Slider selected={selectedView} options={sliderOptions} setSelected={setSelectedView} />
+
                   <div className="ml-auto" />
+
+                  {/* Code View Actions */}
                   {selectedView === 'code' && (
-                    <div className="flex overflow-y-auto">
-                      {/* Export Chat Button */}
+                    <div className="flex items-center gap-2">
                       <ExportChatButton exportChat={exportChat} />
 
-                      {/* Sync Button */}
-                      <div className="flex border border-stackbird-elements-borderColor rounded-md overflow-hidden ml-1">
-                        <DropdownMenu.Root>
-                          <DropdownMenu.Trigger
-                            disabled={isSyncing || streaming}
-                            className="rounded-md items-center justify-center [&:is(:disabled,.disabled)]:cursor-not-allowed [&:is(:disabled,.disabled)]:opacity-60 px-3 py-1.5 text-xs bg-accent-500 text-white hover:text-stackbird-elements-item-contentAccent [&:not(:disabled,.disabled)]:hover:bg-stackbird-elements-button-primary-backgroundHover outline-accent-500 flex gap-1.7"
-                          >
-                            {isSyncing ? 'Syncing...' : 'Sync'}
-                            <span className={classNames('i-ph:caret-down transition-transform')} />
-                          </DropdownMenu.Trigger>
-                          <DropdownMenu.Content
-                            className={classNames(
-                              'min-w-[240px] z-[250]',
-                              'bg-white dark:bg-[#141414]',
-                              'rounded-lg shadow-lg',
-                              'border border-gray-200/50 dark:border-gray-800/50',
-                              'animate-in fade-in-0 zoom-in-95',
-                              'py-1',
-                            )}
-                            sideOffset={5}
-                            align="end"
-                          >
-                            <DropdownMenu.Item
-                              className={classNames(
-                                'cursor-pointer flex items-center w-full px-4 py-2 text-sm text-stackbird-elements-textPrimary hover:bg-stackbird-elements-item-backgroundActive gap-2 rounded-md group relative',
-                              )}
-                              onClick={handleSyncFiles}
-                              disabled={isSyncing}
-                            >
-                              <div className="flex items-center gap-2">
-                                {isSyncing ? (
-                                  <div className="i-ph:spinner" />
-                                ) : (
-                                  <div className="i-ph:cloud-arrow-down" />
-                                )}
-                                <span>{isSyncing ? 'Syncing...' : 'Sync Files'}</span>
-                              </div>
-                            </DropdownMenu.Item>
-                          </DropdownMenu.Content>
-                        </DropdownMenu.Root>
-                      </div>
-
-                      {/* Toggle Terminal Button */}
-                      <div className="flex border border-stackbird-elements-borderColor rounded-md overflow-hidden ml-1">
-                        <button
-                          onClick={() => {
-                            workbenchStore.toggleTerminal(!workbenchStore.showTerminal.get());
-                          }}
-                          className="rounded-md items-center justify-center [&:is(:disabled,.disabled)]:cursor-not-allowed [&:is(:disabled,.disabled)]:opacity-60 px-3 py-1.5 text-xs bg-accent-500 text-white hover:text-stackbird-elements-item-contentAccent [&:not(:disabled,.disabled)]:hover:bg-stackbird-elements-button-primary-backgroundHover outline-accent-500 flex gap-1.7"
+                      {/* Sync Button - Modern Style */}
+                      <DropdownMenu.Root>
+                        <DropdownMenu.Trigger
+                          disabled={isSyncing || streaming}
+                          className={classNames(
+                            'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all',
+                            'bg-gradient-to-r from-emerald-500 to-teal-500 text-white',
+                            'hover:from-emerald-600 hover:to-teal-600 hover:shadow-lg hover:shadow-emerald-500/25',
+                            'disabled:opacity-50 disabled:cursor-not-allowed',
+                          )}
                         >
-                          <div className="i-ph:terminal" />
-                          Toggle Terminal
-                        </button>
-                      </div>
+                          <span className="i-ph:cloud-arrow-down" />
+                          {isSyncing ? 'Syncing...' : 'Sync'}
+                          <span className="i-ph:caret-down text-xs" />
+                        </DropdownMenu.Trigger>
+                        <DropdownMenu.Content
+                          className={classNames(
+                            'min-w-[200px] z-[250] p-1',
+                            'bg-white dark:bg-slate-800',
+                            'rounded-xl shadow-xl shadow-black/10',
+                            'border border-slate-200 dark:border-slate-700',
+                            'animate-in fade-in-0 zoom-in-95',
+                          )}
+                          sideOffset={5}
+                          align="end"
+                        >
+                          <DropdownMenu.Item
+                            className={classNames(
+                              'flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer',
+                              'text-sm text-slate-700 dark:text-slate-200',
+                              'hover:bg-slate-100 dark:hover:bg-slate-700',
+                              'transition-colors',
+                            )}
+                            onClick={handleSyncFiles}
+                            disabled={isSyncing}
+                          >
+                            <span className={isSyncing ? 'i-ph:spinner animate-spin' : 'i-ph:cloud-arrow-down'} />
+                            {isSyncing ? 'Syncing...' : 'Sync Files'}
+                          </DropdownMenu.Item>
+                        </DropdownMenu.Content>
+                      </DropdownMenu.Root>
+
+                      {/* Terminal Toggle - Modern Style */}
+                      <button
+                        onClick={() => {
+                          workbenchStore.toggleTerminal(!workbenchStore.showTerminal.get());
+                        }}
+                        className={classNames(
+                          'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all',
+                          'bg-gradient-to-r from-purple-500 to-indigo-500 text-white',
+                          'hover:from-purple-600 hover:to-indigo-600 hover:shadow-lg hover:shadow-purple-500/25',
+                        )}
+                      >
+                        <span className="i-ph:terminal" />
+                        Terminal
+                      </button>
                     </div>
                   )}
 
+                  {/* Diff View Actions */}
                   {selectedView === 'diff' && (
                     <FileModifiedDropdown fileHistory={fileHistory} onSelectFile={handleSelectFile} />
                   )}
-                  <IconButton
-                    icon="i-ph:x-circle"
-                    className="-mr-1"
-                    size="xl"
+
+                  {/* Close Button */}
+                  <button
+                    className={classNames(
+                      'w-8 h-8 flex items-center justify-center rounded-lg transition-all ml-1',
+                      'hover:bg-red-50 dark:hover:bg-red-900/30',
+                      'text-slate-400 hover:text-red-500',
+                    )}
                     onClick={() => {
                       workbenchStore.showWorkbench.set(false);
                     }}
-                  />
+                  >
+                    <span className="i-ph:x text-lg" />
+                  </button>
                 </div>
                 <div className="relative flex-1 overflow-hidden">
                   <View initial={{ x: '0%' }} animate={{ x: selectedView === 'code' ? '0%' : '-100%' }}>

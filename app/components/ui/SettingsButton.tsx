@@ -12,7 +12,7 @@ export const SettingsButton = memo(({ onClick }: SettingsButtonProps) => {
       size="xl"
       title="Settings"
       data-testid="settings-button"
-      className="text-[#666] hover:text-stackbird-elements-textPrimary hover:bg-stackbird-elements-item-backgroundActive/10 transition-colors"
+      className="text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all"
     />
   );
 });
@@ -29,7 +29,7 @@ export const HelpButton = memo(({ onClick }: HelpButtonProps) => {
       size="xl"
       title="Help & Documentation"
       data-testid="help-button"
-      className="text-[#666] hover:text-stackbird-elements-textPrimary hover:bg-stackbird-elements-item-backgroundActive/10 transition-colors"
+      className="text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all"
     />
   );
 });

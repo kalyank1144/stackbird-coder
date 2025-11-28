@@ -221,11 +221,13 @@
  */
 :root {
   --header-height: 54px;
+  --sidebar-width: 72px;
   --chat-max-width: 33rem;
-  --chat-min-width: 533px;
-  --workbench-width: min(calc(100% - var(--chat-min-width)), 2536px);
+  --chat-min-width: 380px;
+  --workbench-width: min(calc(100% - var(--chat-min-width) - var(--sidebar-width)), 2536px);
   --workbench-inner-width: var(--workbench-width);
-  --workbench-left: calc(100% - var(--workbench-width));
+  --workbench-left: calc(var(--sidebar-width) + var(--chat-min-width));
+  --chat-available-width: calc(100% - var(--sidebar-width));
 
   /* Toasts */
   --toastify-color-progress-success: var(--stackbird-elements-icon-success);

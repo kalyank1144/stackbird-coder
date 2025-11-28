@@ -36,33 +36,33 @@ export function UserMessage({ content, parts }: UserMessageProps) {
     const textContent = stripMetadata(textItem?.text || '');
 
     return (
-      <div className="overflow-hidden flex flex-col gap-3 items-center ">
-        <div className="flex flex-row items-start justify-center overflow-hidden shrink-0 self-start">
-          {profile?.avatar || profile?.username ? (
-            <div className="flex items-end gap-2">
+      <div className="overflow-hidden flex flex-col gap-3 items-end ml-auto max-w-[85%]">
+        {/* User Avatar & Name */}
+        <div className="flex flex-row items-center gap-2 self-end">
+          <span className="text-slate-600 dark:text-slate-300 text-sm font-medium">{profile?.username || 'You'}</span>
+          <div className="w-8 h-8 rounded-full overflow-hidden bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
+            {profile?.avatar ? (
               <img
                 src={profile.avatar}
                 alt={profile?.username || 'User'}
-                className="w-[25px] h-[25px] object-cover rounded-full"
+                className="w-full h-full object-cover"
                 loading="eager"
                 decoding="sync"
               />
-              <span className="text-stackbird-elements-textPrimary text-sm">
-                {profile?.username ? profile.username : ''}
-              </span>
-            </div>
-          ) : (
-            <div className="i-ph:user-fill text-accent-500 text-2xl" />
-          )}
+            ) : (
+              <span className="i-ph:user-fill text-white text-sm" />
+            )}
+          </div>
         </div>
-        <div className="flex flex-col gap-4 bg-accent-500/10 backdrop-blur-sm p-3 py-3 w-auto rounded-lg mr-auto">
+        {/* Message Bubble */}
+        <div className="flex flex-col gap-3 bg-gradient-to-br from-purple-500 to-indigo-600 text-white px-4 py-3 rounded-2xl rounded-tr-sm shadow-lg shadow-purple-500/20">
           {textContent && <Markdown html>{textContent}</Markdown>}
           {images.map((item, index) => (
             <img
               key={index}
               src={`data:${item.mimeType};base64,${item.data}`}
               alt={`Image ${index + 1}`}
-              className="max-w-full h-auto rounded-lg"
+              className="max-w-full h-auto rounded-xl border border-white/20"
               style={{ maxHeight: '512px', objectFit: 'contain' }}
             />
           ))}
@@ -74,23 +74,41 @@ export function UserMessage({ content, parts }: UserMessageProps) {
   const textContent = stripMetadata(content);
 
   return (
-    <div className="flex flex-col bg-accent-500/10 backdrop-blur-sm px-5 p-3.5 w-auto rounded-lg ml-auto">
-      <div className="flex gap-3.5 mb-4">
-        {images.map((item, index) => (
-          <div className="relative flex rounded-lg border border-stackbird-elements-borderColor overflow-hidden">
-            <div className="h-16 w-16 bg-transparent outline-none">
-              <img
-                key={index}
-                src={`data:${item.mimeType};base64,${item.data}`}
-                alt={`Image ${index + 1}`}
-                className="h-full w-full rounded-lg"
-                style={{ objectFit: 'fill' }}
-              />
-            </div>
-          </div>
-        ))}
+    <div className="flex flex-col items-end ml-auto max-w-[85%]">
+      {/* User Avatar & Name */}
+      <div className="flex flex-row items-center gap-2 mb-2">
+        <span className="text-slate-600 dark:text-slate-300 text-sm font-medium">{profile?.username || 'You'}</span>
+        <div className="w-8 h-8 rounded-full overflow-hidden bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
+          {profile?.avatar ? (
+            <img
+              src={profile.avatar}
+              alt={profile?.username || 'User'}
+              className="w-full h-full object-cover"
+              loading="eager"
+              decoding="sync"
+            />
+          ) : (
+            <span className="i-ph:user-fill text-white text-sm" />
+          )}
+        </div>
       </div>
-      <Markdown html>{textContent}</Markdown>
+      {/* Message Bubble */}
+      <div className="bg-gradient-to-br from-purple-500 to-indigo-600 text-white px-4 py-3 rounded-2xl rounded-tr-sm shadow-lg shadow-purple-500/20">
+        {images.length > 0 && (
+          <div className="flex gap-2 mb-3 flex-wrap">
+            {images.map((item, index) => (
+              <div key={index} className="relative rounded-xl overflow-hidden border border-white/20">
+                <img
+                  src={`data:${item.mimeType};base64,${item.data}`}
+                  alt={`Image ${index + 1}`}
+                  className="h-16 w-16 object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        )}
+        <Markdown html>{textContent}</Markdown>
+      </div>
     </div>
   );
 }

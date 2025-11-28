@@ -49,10 +49,18 @@ const messageParser = new EnhancedStreamingMessageParser({
     },
   },
 });
-const extractTextContent = (message: Message) =>
-  Array.isArray(message.content)
-    ? (message.content.find((item) => item.type === 'text')?.text as string) || ''
-    : message.content;
+const extractTextContent = (message: Message): string => {
+  if (!message || message.content === undefined || message.content === null) {
+    return '';
+  }
+
+  if (Array.isArray(message.content)) {
+    const textContent = message.content.find((item) => item.type === 'text');
+    return (textContent?.text as string) || '';
+  }
+
+  return typeof message.content === 'string' ? message.content : '';
+};
 
 export function useMessageParser() {
   const [parsedMessages, setParsedMessages] = useState<{ [key: number]: string }>({});

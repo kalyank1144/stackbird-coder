@@ -70,6 +70,18 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
   const [widthPercent, setWidthPercent] = useState<number>(37.5);
   const [currentWidth, setCurrentWidth] = useState<number>(0);
 
+  // Debug logging for previews
+  useEffect(() => {
+    console.log('[Preview Component] Previews updated:', {
+      previewsCount: previews.length,
+      previews: previews.map((p) => ({ port: p.port, ready: p.ready, baseUrl: p.baseUrl })),
+      activePreviewIndex,
+      activePreview: activePreview
+        ? { port: activePreview.port, ready: activePreview.ready, baseUrl: activePreview.baseUrl }
+        : null,
+    });
+  }, [previews, activePreviewIndex, activePreview]);
+
   const resizingState = useRef({
     isResizing: false,
     side: null as ResizeSide,

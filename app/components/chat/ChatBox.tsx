@@ -3,8 +3,6 @@ import { ClientOnly } from 'remix-utils/client-only';
 import { classNames } from '~/utils/classNames';
 import { PROVIDER_LIST } from '~/utils/constants';
 import { ModelSelector } from '~/components/chat/ModelSelector';
-import { APIKeyManager } from './APIKeyManager';
-import { LOCAL_PROVIDERS } from '~/lib/stores/settings';
 import FilePreview from './FilePreview';
 import { ScreenshotStateManager } from './ScreenshotStateManager';
 import { SendButton } from './SendButton.client';
@@ -67,13 +65,7 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
   return (
     <div
       className={classNames(
-        'relative bg-stackbird-elements-background-depth-2 backdrop-blur p-3 rounded-lg border border-stackbird-elements-borderColor relative w-full max-w-chat mx-auto z-prompt',
-
-        /*
-         * {
-         *   'sticky bottom-2': chatStarted,
-         * },
-         */
+        'relative bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-3 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 shadow-xl shadow-slate-200/20 dark:shadow-slate-950/50 relative w-full max-w-chat mx-auto z-prompt',
       )}
     >
       <svg className={classNames(styles.PromptEffectContainer)}>
@@ -117,17 +109,6 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
                 apiKeys={props.apiKeys}
                 modelLoading={props.isModelLoading}
               />
-              {(props.providerList || []).length > 0 &&
-                props.provider &&
-                !LOCAL_PROVIDERS.includes(props.provider.name) && (
-                  <APIKeyManager
-                    provider={props.provider}
-                    apiKey={props.apiKeys[props.provider.name] || ''}
-                    setApiKey={(key) => {
-                      props.onApiKeysChange(props.provider.name, key);
-                    }}
-                  />
-                )}
             </div>
           )}
         </ClientOnly>
@@ -168,15 +149,14 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
       )}
       <div
         className={classNames(
-          'relative shadow-xs border border-stackbird-elements-borderColor backdrop-blur rounded-lg',
+          'relative border border-slate-200 dark:border-slate-700/50 rounded-xl bg-white/50 dark:bg-slate-800/30',
         )}
       >
         <textarea
           ref={props.textareaRef}
           className={classNames(
-            'w-full pl-4 pt-4 pr-16 outline-none resize-none text-stackbird-elements-textPrimary placeholder-stackbird-elements-textTertiary bg-transparent text-sm',
+            'w-full pl-4 pt-4 pr-16 outline-none resize-none text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 bg-transparent text-sm',
             'transition-all duration-200',
-            'hover:border-stackbird-elements-focus',
           )}
           onDragEnter={(e) => {
             e.preventDefault();
@@ -262,26 +242,33 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
             />
           )}
         </ClientOnly>
-        <div className="flex justify-between items-center text-sm p-4 pt-2">
+        <div className="flex justify-between items-center text-sm px-3 py-2">
           <div className="flex gap-1 items-center">
             <ColorSchemeDialog designScheme={props.designScheme} setDesignScheme={props.setDesignScheme} />
             <McpTools />
-            <IconButton title="Upload file" className="transition-all" onClick={() => props.handleFileUpload()}>
-              <div className="i-ph:paperclip text-xl"></div>
+            <IconButton
+              title="Upload file"
+              className="transition-all hover:bg-purple-100 dark:hover:bg-purple-900/30 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg"
+              onClick={() => props.handleFileUpload()}
+            >
+              <div className="i-ph:paperclip text-lg"></div>
             </IconButton>
             <IconButton
               title="Enhance prompt"
               disabled={props.input.length === 0 || props.enhancingPrompt}
-              className={classNames('transition-all', props.enhancingPrompt ? 'opacity-100' : '')}
+              className={classNames(
+                'transition-all hover:bg-amber-100 dark:hover:bg-amber-900/30 hover:text-amber-600 dark:hover:text-amber-400 rounded-lg',
+                props.enhancingPrompt ? 'opacity-100' : '',
+              )}
               onClick={() => {
                 props.enhancePrompt?.();
                 toast.success('Prompt enhanced!');
               }}
             >
               {props.enhancingPrompt ? (
-                <div className="i-svg-spinners:90-ring-with-bg text-stackbird-elements-loader-progress text-xl animate-spin"></div>
+                <div className="i-svg-spinners:90-ring-with-bg text-purple-500 text-lg animate-spin"></div>
               ) : (
-                <div className="i-stackbird:stars text-xl"></div>
+                <div className="i-stackbird:stars text-lg"></div>
               )}
             </IconButton>
 
@@ -295,39 +282,48 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
               <IconButton
                 title="Discuss"
                 className={classNames(
-                  'transition-all flex items-center gap-1 px-1.5',
+                  'transition-all flex items-center gap-1 px-2 rounded-lg',
                   props.chatMode === 'discuss'
-                    ? '!bg-stackbird-elements-item-backgroundAccent !text-stackbird-elements-item-contentAccent'
-                    : 'bg-stackbird-elements-item-backgroundDefault text-stackbird-elements-item-contentDefault',
+                    ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400'
+                    : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400',
                 )}
                 onClick={() => {
                   props.setChatMode?.(props.chatMode === 'discuss' ? 'build' : 'discuss');
                 }}
               >
-                <div className={`i-ph:chats text-xl`} />
-                {props.chatMode === 'discuss' ? <span>Discuss</span> : <span />}
+                <div className={`i-ph:chats text-lg`} />
+                {props.chatMode === 'discuss' ? <span className="text-xs font-medium">Discuss</span> : <span />}
               </IconButton>
             )}
             <IconButton
               title="Model Settings"
-              className={classNames('transition-all flex items-center gap-1', {
-                'bg-stackbird-elements-item-backgroundAccent text-stackbird-elements-item-contentAccent':
-                  props.isModelSettingsCollapsed,
-                'bg-stackbird-elements-item-backgroundDefault text-stackbird-elements-item-contentDefault':
+              className={classNames('transition-all flex items-center gap-1 px-2 rounded-lg', {
+                'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400':
                   !props.isModelSettingsCollapsed,
+                'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400':
+                  props.isModelSettingsCollapsed,
               })}
               onClick={() => props.setIsModelSettingsCollapsed(!props.isModelSettingsCollapsed)}
               disabled={!props.providerList || props.providerList.length === 0}
             >
-              <div className={`i-ph:caret-${props.isModelSettingsCollapsed ? 'right' : 'down'} text-lg`} />
-              {props.isModelSettingsCollapsed ? <span className="text-xs">{props.model}</span> : <span />}
+              <div className={`i-ph:caret-${props.isModelSettingsCollapsed ? 'right' : 'down'} text-sm`} />
+              {props.isModelSettingsCollapsed ? (
+                <span className="text-xs font-medium max-w-[100px] truncate">{props.model}</span>
+              ) : (
+                <span className="text-xs font-medium">Model</span>
+              )}
             </IconButton>
           </div>
           {props.input.length > 3 ? (
-            <div className="text-xs text-stackbird-elements-textTertiary">
-              Use <kbd className="kdb px-1.5 py-0.5 rounded bg-stackbird-elements-background-depth-2">Shift</kbd> +{' '}
-              <kbd className="kdb px-1.5 py-0.5 rounded bg-stackbird-elements-background-depth-2">Return</kbd> a new
-              line
+            <div className="text-xs text-slate-400 dark:text-slate-500 hidden sm:block">
+              <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono text-[10px]">
+                Shift
+              </kbd>{' '}
+              +{' '}
+              <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono text-[10px]">
+                Enter
+              </kbd>{' '}
+              for new line
             </div>
           ) : null}
           <SupabaseConnection />
