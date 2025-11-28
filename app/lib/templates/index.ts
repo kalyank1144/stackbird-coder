@@ -8,6 +8,7 @@ import { vanillaViteTemplate } from './vanilla-vite';
 import { nextjsShadcnTemplate } from './nextjs-shadcn';
 import { vueTemplate } from './vue';
 import { expoTemplate } from './expo';
+import { flutterTemplate } from './flutter';
 
 // Re-export types from types.ts
 export type { TemplateFile, BundledTemplate } from './types';
@@ -20,6 +21,7 @@ export const BUNDLED_TEMPLATES: Record<string, BundledTemplate> = {
   'NextJS Shadcn': nextjsShadcnTemplate,
   Vue: vueTemplate,
   'Expo App': expoTemplate,
+  'Flutter App': flutterTemplate,
 };
 
 // List of template names that are bundled locally
