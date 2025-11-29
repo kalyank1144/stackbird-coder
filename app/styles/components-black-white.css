@@ -1,0 +1,509 @@
+/**
+ * Component-Specific Black & White Theme Overrides
+ * Targets specific Stackbird components with black & white styling
+ */
+
+/* === WORKBENCH COMPONENTS === */
+
+/* Workbench Layout */
+[class*="Workbench"] {
+  background-color: #FFFFFF;
+}
+
+[class*="workbench"] {
+  background-color: #FFFFFF;
+  color: #000000;
+}
+
+/* === CHAT COMPONENTS === */
+
+/* Chat Container */
+[class*="BaseChat"],
+[class*="Chat_client"],
+[class*="chat-container"] {
+  background-color: #FFFFFF;
+}
+
+/* Chat Messages */
+[class*="Message"] {
+  background-color: #F5F5F5;
+  border: 1px solid #E0E0E0;
+  color: #000000;
+}
+
+[class*="Message"][data-role="user"],
+[class*="message-user"] {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  border-color: #000000 !important;
+}
+
+[class*="Message"][data-role="assistant"],
+[class*="message-assistant"] {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  border-color: #E0E0E0 !important;
+}
+
+/* Chat Input Box */
+[class*="ChatBox"],
+[class*="chat-input"] {
+  background-color: #FFFFFF;
+  border: 1px solid #BDBDBD;
+  color: #000000;
+}
+
+[class*="ChatBox"]:focus-within,
+[class*="chat-input"]:focus-within {
+  border-color: #000000;
+}
+
+/* Chat Textarea */
+textarea[class*="chat"],
+textarea[placeholder*="Stackbird"],
+textarea[placeholder*="help"] {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  border-color: #BDBDBD !important;
+}
+
+textarea[class*="chat"]:focus {
+  border-color: #000000 !important;
+}
+
+/* === SIDEBAR COMPONENTS === */
+
+/* Main Sidebar */
+[class*="Sidebar"],
+nav[class*="sidebar"] {
+  background-color: #000000 !important;
+  border-right: 1px solid #424242;
+  color: #FFFFFF;
+}
+
+/* Sidebar Items */
+[class*="Sidebar"] button,
+[class*="Sidebar"] a,
+nav[class*="sidebar"] button,
+nav[class*="sidebar"] a {
+  color: #BDBDBD;
+}
+
+[class*="Sidebar"] button:hover,
+[class*="Sidebar"] a:hover,
+nav[class*="sidebar"] button:hover,
+nav[class*="sidebar"] a:hover {
+  background-color: #424242;
+  color: #FFFFFF;
+}
+
+[class*="Sidebar"] button[data-active="true"],
+[class*="Sidebar"] a[data-active="true"],
+nav[class*="sidebar"] button.active,
+nav[class*="sidebar"] a.active {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+}
+
+/* === HEADER COMPONENTS === */
+
+/* App Header */
+header,
+[class*="Header"] {
+  background-color: #000000 !important;
+  border-bottom: 1px solid #424242;
+  color: #FFFFFF !important;
+}
+
+header *,
+[class*="Header"] * {
+  color: #FFFFFF !important;
+}
+
+/* Header Buttons */
+header button,
+[class*="Header"] button {
+  color: #FFFFFF !important;
+  border-color: #757575 !important;
+}
+
+header button:hover,
+[class*="Header"] button:hover {
+  background-color: #424242 !important;
+}
+
+/* === EDITOR COMPONENTS === */
+
+/* Editor Container */
+[class*="Editor"],
+[class*="editor-container"] {
+  background-color: #FFFFFF;
+  border: 1px solid #E0E0E0;
+}
+
+/* Editor Tabs */
+[class*="editor-tab"],
+[class*="EditorTab"] {
+  background-color: #F5F5F5;
+  border: 1px solid #E0E0E0;
+  color: #757575;
+}
+
+[class*="editor-tab"].active,
+[class*="EditorTab"][data-active="true"] {
+  background-color: #FFFFFF;
+  color: #000000;
+  border-bottom-color: transparent;
+}
+
+/* === TERMINAL COMPONENTS === */
+
+/* Terminal */
+[class*="Terminal"],
+[class*="terminal"] {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+[class*="Terminal"] *,
+[class*="terminal"] * {
+  color: #FFFFFF !important;
+}
+
+/* === PREVIEW COMPONENTS === */
+
+/* Preview Container */
+[class*="Preview"],
+[class*="preview"] {
+  background-color: #FFFFFF;
+  border: 1px solid #E0E0E0;
+}
+
+/* Preview Toolbar */
+[class*="preview-toolbar"],
+[class*="PreviewToolbar"] {
+  background-color: #F5F5F5;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+/* === BUTTON COMPONENTS === */
+
+/* Primary Buttons */
+button[class*="primary"],
+button[data-variant="primary"],
+.btn-primary {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #000000 !important;
+}
+
+button[class*="primary"]:hover,
+button[data-variant="primary"]:hover,
+.btn-primary:hover {
+  background-color: #212121 !important;
+}
+
+/* Secondary Buttons */
+button[class*="secondary"],
+button[data-variant="secondary"],
+.btn-secondary {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  border: 1px solid #616161 !important;
+}
+
+button[class*="secondary"]:hover,
+button[data-variant="secondary"]:hover,
+.btn-secondary:hover {
+  background-color: #F5F5F5 !important;
+}
+
+/* Ghost Buttons */
+button[class*="ghost"],
+button[data-variant="ghost"],
+.btn-ghost {
+  background-color: transparent !important;
+  color: #000000 !important;
+  border: none !important;
+}
+
+button[class*="ghost"]:hover,
+button[data-variant="ghost"]:hover,
+.btn-ghost:hover {
+  background-color: #F5F5F5 !important;
+}
+
+/* Icon Buttons */
+button[class*="icon"],
+button[aria-label] {
+  color: #000000;
+}
+
+button[class*="icon"]:hover,
+button[aria-label]:hover {
+  background-color: #F5F5F5;
+}
+
+/* === MODAL & DIALOG COMPONENTS === */
+
+/* Modal Overlay */
+[class*="modal-overlay"],
+[class*="Modal"] > div:first-child {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Modal Content */
+[class*="modal-content"],
+[class*="Modal"] [role="dialog"],
+[class*="Dialog"] {
+  background-color: #FFFFFF !important;
+  border: 1px solid #BDBDBD !important;
+  color: #000000 !important;
+}
+
+/* Modal Header */
+[class*="modal-header"],
+[class*="Dialog"] header {
+  border-bottom: 1px solid #E0E0E0;
+  color: #000000;
+}
+
+/* Modal Footer */
+[class*="modal-footer"],
+[class*="Dialog"] footer {
+  border-top: 1px solid #E0E0E0;
+}
+
+/* === DROPDOWN COMPONENTS === */
+
+/* Dropdown Menu */
+[class*="dropdown"],
+[class*="Dropdown"],
+[role="menu"],
+[role="listbox"] {
+  background-color: #FFFFFF !important;
+  border: 1px solid #BDBDBD !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Dropdown Items */
+[class*="dropdown"] [role="menuitem"],
+[class*="Dropdown"] button,
+[role="menu"] [role="menuitem"],
+[role="option"] {
+  color: #000000 !important;
+}
+
+[class*="dropdown"] [role="menuitem"]:hover,
+[class*="Dropdown"] button:hover,
+[role="menu"] [role="menuitem"]:hover,
+[role="option"]:hover {
+  background-color: #F5F5F5 !important;
+}
+
+[class*="dropdown"] [role="menuitem"][data-active="true"],
+[role="option"][aria-selected="true"] {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+/* === INPUT COMPONENTS === */
+
+/* Text Inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="url"],
+textarea,
+select {
+  background-color: #FFFFFF !important;
+  border: 1px solid #BDBDBD !important;
+  color: #000000 !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #000000 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background-color: #EEEEEE !important;
+  color: #9E9E9E !important;
+  cursor: not-allowed;
+}
+
+/* === FILE TREE COMPONENTS === */
+
+/* File Tree */
+[class*="FileTree"],
+[class*="file-tree"] {
+  background-color: #FFFFFF;
+  border-right: 1px solid #E0E0E0;
+}
+
+/* File Tree Items */
+[class*="FileTree"] button,
+[class*="file-tree"] button,
+[class*="file-item"] {
+  color: #000000;
+}
+
+[class*="FileTree"] button:hover,
+[class*="file-tree"] button:hover,
+[class*="file-item"]:hover {
+  background-color: #F5F5F5;
+}
+
+[class*="FileTree"] button[data-active="true"],
+[class*="file-tree"] button.active,
+[class*="file-item"].active {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+/* === TOAST NOTIFICATIONS === */
+
+.Toastify__toast {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  border: 1px solid #E0E0E0 !important;
+}
+
+.Toastify__toast--success {
+  border-left: 4px solid #000000 !important;
+}
+
+.Toastify__toast--error {
+  border-left: 4px solid #000000 !important;
+}
+
+.Toastify__toast--warning {
+  border-left: 4px solid #757575 !important;
+}
+
+/* === BADGE COMPONENTS === */
+
+[class*="badge"],
+[class*="Badge"],
+[class*="tag"],
+[class*="Tag"] {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  border-radius: 4px;
+}
+
+[class*="badge"][data-variant="outline"],
+[class*="Badge"][data-variant="outline"] {
+  background-color: transparent !important;
+  color: #000000 !important;
+  border: 1px solid #616161 !important;
+}
+
+/* === LOADING COMPONENTS === */
+
+/* Loading Spinner */
+[class*="spinner"],
+[class*="Spinner"],
+[class*="loading"] {
+  border-color: #E0E0E0 !important;
+  border-top-color: #000000 !important;
+}
+
+/* === SCROLLBAR === */
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: #F5F5F5;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #BDBDBD;
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #757575;
+}
+
+/* === REMOVE ALL COLORED BACKGROUNDS === */
+
+/* Remove purple/violet/indigo backgrounds */
+[style*="background"][style*="purple"],
+[style*="background"][style*="violet"],
+[style*="background"][style*="indigo"],
+[style*="background"][style*="blue"],
+[style*="background"][style*="gradient"] {
+  background: #FFFFFF !important;
+  background-image: none !important;
+}
+
+/* Remove colored text */
+[style*="color"][style*="purple"],
+[style*="color"][style*="violet"],
+[style*="color"][style*="indigo"],
+[style*="color"][style*="blue"] {
+  color: #000000 !important;
+}
+
+/* === TAILWIND/UNOCSS OVERRIDES === */
+
+/* Background colors */
+.bg-purple-500,
+.bg-purple-600,
+.bg-indigo-500,
+.bg-indigo-600,
+.bg-blue-500,
+.bg-blue-600,
+.bg-violet-500,
+.bg-violet-600 {
+  background-color: #000000 !important;
+}
+
+/* Text colors */
+.text-purple-500,
+.text-purple-600,
+.text-indigo-500,
+.text-indigo-600,
+.text-blue-500,
+.text-blue-600,
+.text-violet-500,
+.text-violet-600 {
+  color: #000000 !important;
+}
+
+/* Border colors */
+.border-purple-500,
+.border-purple-600,
+.border-indigo-500,
+.border-indigo-600,
+.border-blue-500,
+.border-blue-600,
+.border-violet-500,
+.border-violet-600 {
+  border-color: #616161 !important;
+}
+
+/* === EXCLUDE LANDING PAGE === */
+
+/* Don't apply theme to landing page */
+.landing-page,
+[data-page="landing"],
+[class*="LandingPage"] {
+  /* Keep original styles */
+}
+
+.landing-page *,
+[data-page="landing"] *,
+[class*="LandingPage"] * {
+  /* Keep original styles */
+}
