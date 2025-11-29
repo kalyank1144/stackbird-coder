@@ -295,24 +295,7 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
                 {props.chatMode === 'discuss' ? <span className="text-xs font-medium">Discuss</span> : <span />}
               </IconButton>
             )}
-            <IconButton
-              title="Model Settings"
-              className={classNames('transition-all flex items-center gap-1 px-2 rounded-lg', {
-                'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400':
-                  !props.isModelSettingsCollapsed,
-                'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400':
-                  props.isModelSettingsCollapsed,
-              })}
-              onClick={() => props.setIsModelSettingsCollapsed(!props.isModelSettingsCollapsed)}
-              disabled={!props.providerList || props.providerList.length === 0}
-            >
-              <div className={`i-ph:caret-${props.isModelSettingsCollapsed ? 'right' : 'down'} text-sm`} />
-              {props.isModelSettingsCollapsed ? (
-                <span className="text-xs font-medium max-w-[100px] truncate">{props.model}</span>
-              ) : (
-                <span className="text-xs font-medium">Model</span>
-              )}
-            </IconButton>
+
           </div>
           {props.input.length > 3 ? (
             <div className="text-xs text-slate-400 dark:text-slate-500 hidden sm:block">
