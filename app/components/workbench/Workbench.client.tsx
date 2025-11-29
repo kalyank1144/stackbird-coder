@@ -381,7 +381,7 @@ export const Workbench = memo(
         >
           <div
             className={classNames(
-              'fixed top-[calc(var(--header-height)+1rem)] bottom-4 w-[var(--workbench-inner-width)] z-0 transition-[left,width] duration-300 ease-out',
+              'fixed top-[var(--header-height)] bottom-0 w-[var(--workbench-inner-width)] z-0 transition-[left,width] duration-300 ease-out',
               {
                 'w-[calc(100%-var(--sidebar-width))]': isSmallViewport,
                 'left-[var(--sidebar-width)]': showWorkbench && isSmallViewport,
@@ -390,11 +390,11 @@ export const Workbench = memo(
               },
             )}
           >
-            <div className="absolute inset-0 px-2 lg:px-3">
-              {/* Modern Glassmorphism Container */}
-              <div className="h-full flex flex-col bg-white/80 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 shadow-2xl shadow-slate-900/10 dark:shadow-black/30 rounded-2xl overflow-hidden">
-                {/* Header Bar with gradient */}
-                <div className="flex items-center px-4 py-3 border-b border-slate-200/50 dark:border-slate-700/50 bg-gradient-to-r from-slate-50/80 to-white/80 dark:from-slate-800/80 dark:to-slate-900/80 gap-2">
+            <div className="absolute inset-0">
+              {/* Professional Container with left border */}
+              <div className="h-full flex flex-col bg-stackbird-elements-background-depth-1 border-l border-stackbird-elements-borderColor overflow-hidden">
+                {/* Header Bar */}
+                <div className="flex items-center px-4 py-2.5 border-b border-stackbird-elements-borderColor bg-stackbird-elements-background-depth-2 gap-2">
                   {/* Sidebar Toggle */}
                   <button
                     className={classNames(

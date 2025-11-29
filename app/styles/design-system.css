@@ -7,36 +7,36 @@
   /* ===== Color Palette (Zinc/Slate inspired) ===== */
 
   /* Backgrounds */
-  --bg-primary: #09090B;
+  --bg-primary: #09090b;
   /* Zinc 950 */
-  --bg-secondary: #18181B;
+  --bg-secondary: #18181b;
   /* Zinc 900 */
-  --bg-tertiary: #27272A;
+  --bg-tertiary: #27272a;
   /* Zinc 800 */
-  --bg-elevated: #27272A;
+  --bg-elevated: #27272a;
   /* Zinc 800 */
 
   /* Accents (Subtle White/Gray) */
-  --accent-primary: #FAFAFA;
+  --accent-primary: #fafafa;
   /* Zinc 50 */
-  --accent-secondary: #A1A1AA;
+  --accent-secondary: #a1a1aa;
   /* Zinc 400 */
 
   /* Text Colors */
-  --text-primary: #FAFAFA;
+  --text-primary: #fafafa;
   /* Zinc 50 */
-  --text-secondary: #A1A1AA;
+  --text-secondary: #a1a1aa;
   /* Zinc 400 */
-  --text-tertiary: #71717A;
+  --text-tertiary: #71717a;
   /* Zinc 500 */
-  --text-highlight: #FFFFFF;
+  --text-highlight: #ffffff;
 
   /* Borders */
-  --border-primary: #27272A;
+  --border-primary: #27272a;
   /* Zinc 800 */
-  --border-secondary: #3F3F46;
+  --border-secondary: #3f3f46;
   /* Zinc 700 */
-  --border-hover: #52525B;
+  --border-hover: #52525b;
   /* Zinc 600 */
 
   /* Shadows (Subtle, crisp) */
@@ -162,9 +162,9 @@ body {
 }
 
 .btn-primary:hover {
-  background-color: #E4E4E7;
+  background-color: #e4e4e7;
   /* Zinc 200 */
-  border-color: #E4E4E7;
+  border-color: #e4e4e7;
 }
 
 .btn-secondary {
