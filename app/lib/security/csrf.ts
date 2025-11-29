@@ -38,13 +38,15 @@ export async function validateCSRFToken(request: Request, sessionToken?: string)
 
   // Get CSRF token from header or form data
   const headerToken = request.headers.get('X-CSRF-Token');
-  
+
   let bodyToken: string | null = null;
+
   try {
     const contentType = request.headers.get('Content-Type');
+
     if (contentType?.includes('application/json')) {
-      const body = await request.clone().json();
-      bodyToken = body.csrfToken;
+      const body = (await request.clone().json()) as { csrfToken?: string };
+      bodyToken = body.csrfToken || null;
     } else if (contentType?.includes('application/x-www-form-urlencoded')) {
       const formData = await request.clone().formData();
       bodyToken = formData.get('csrfToken') as string;
@@ -68,7 +70,7 @@ export async function validateCSRFToken(request: Request, sessionToken?: string)
 export function addCSRFTokenToResponse(response: Response, token: string): Response {
   const headers = new Headers(response.headers);
   headers.set('X-CSRF-Token', token);
-  
+
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
@@ -82,16 +84,16 @@ export function addCSRFTokenToResponse(response: Response, token: string): Respo
 export const SECURITY_HEADERS = {
   // Prevent clickjacking
   'X-Frame-Options': 'DENY',
-  
+
   // Prevent MIME type sniffing
   'X-Content-Type-Options': 'nosniff',
-  
+
   // Enable XSS protection
   'X-XSS-Protection': '1; mode=block',
-  
+
   // Referrer policy
   'Referrer-Policy': 'strict-origin-when-cross-origin',
-  
+
   // Content Security Policy
   'Content-Security-Policy': [
     "default-src 'self'",
@@ -102,7 +104,7 @@ export const SECURITY_HEADERS = {
     "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
     "frame-src 'self' https:",
   ].join('; '),
-  
+
   // Permissions Policy
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
 };
@@ -112,11 +114,11 @@ export const SECURITY_HEADERS = {
  */
 export function applySecurityHeaders(response: Response): Response {
   const headers = new Headers(response.headers);
-  
+
   Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
     headers.set(key, value);
   });
-  
+
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
@@ -145,11 +147,7 @@ export function isAllowedOrigin(origin: string, allowedOrigins: string[]): boole
 /**
  * Apply CORS headers
  */
-export function applyCORSHeaders(
-  response: Response,
-  origin: string,
-  allowedOrigins: string[] = ['*'],
-): Response {
+export function applyCORSHeaders(response: Response, origin: string, allowedOrigins: string[] = ['*']): Response {
   if (!isAllowedOrigin(origin, allowedOrigins)) {
     return response;
   }

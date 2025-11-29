@@ -85,18 +85,23 @@ export const loginSchema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters').max(100),
 });
 
-export const signupSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z
-    .string()
-    .min(8, 'Password must be at least 8 characters')
-    .max(100)
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'Password must contain at least one uppercase letter, one lowercase letter, and one number'),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: 'Passwords do not match',
-  path: ['confirmPassword'],
-});
+export const signupSchema = z
+  .object({
+    email: z.string().email('Invalid email address'),
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters')
+      .max(100)
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+        'Password must contain at least one uppercase letter, one lowercase letter, and one number',
+      ),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });
 
 /**
  * API Request Validation Schemas
@@ -159,7 +164,10 @@ export const settingsSchema = z.object({
 /**
  * Helper function to validate and sanitize input
  */
-export function validateInput<T>(schema: z.ZodSchema<T>, data: unknown): { success: true; data: T } | { success: false; errors: string[] } {
+export function validateInput<T>(
+  schema: z.ZodSchema<T>,
+  data: unknown,
+): { success: true; data: T } | { success: false; errors: string[] } {
   try {
     const validated = schema.parse(data);
     return { success: true, data: validated };
@@ -170,6 +178,7 @@ export function validateInput<T>(schema: z.ZodSchema<T>, data: unknown): { succe
         errors: error.errors.map((err) => `${err.path.join('.')}: ${err.message}`),
       };
     }
+
     return {
       success: false,
       errors: ['Validation failed'],

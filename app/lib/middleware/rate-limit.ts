@@ -20,11 +20,11 @@ interface RateLimitStore {
 }
 
 export class RateLimiter {
-  private store: RateLimitStore = {};
-  private config: Required<RateLimitConfig>;
+  private _store: RateLimitStore = {};
+  private _config: Required<RateLimitConfig>;
 
   constructor(config: RateLimitConfig) {
-    this.config = {
+    this._config = {
       windowMs: config.windowMs,
       maxRequests: config.maxRequests,
       message: config.message || 'Too many requests, please try again later.',
@@ -34,7 +34,7 @@ export class RateLimiter {
     };
 
     // Clean up expired entries every minute
-    setInterval(() => this.cleanup(), 60000);
+    setInterval(() => this._cleanup(), 60000);
   }
 
   /**
@@ -42,19 +42,19 @@ export class RateLimiter {
    */
   check(identifier: string): { allowed: boolean; remaining: number; resetTime: number } {
     const now = Date.now();
-    const entry = this.store[identifier];
+    const entry = this._store[identifier];
 
     // No entry or expired entry
     if (!entry || now > entry.resetTime) {
-      this.store[identifier] = {
+      this._store[identifier] = {
         count: 1,
-        resetTime: now + this.config.windowMs,
+        resetTime: now + this._config.windowMs,
       };
 
       return {
         allowed: true,
-        remaining: this.config.maxRequests - 1,
-        resetTime: now + this.config.windowMs,
+        remaining: this._config.maxRequests - 1,
+        resetTime: now + this._config.windowMs,
       };
     }
 
@@ -62,7 +62,7 @@ export class RateLimiter {
     entry.count++;
 
     // Check if limit exceeded
-    if (entry.count > this.config.maxRequests) {
+    if (entry.count > this._config.maxRequests) {
       return {
         allowed: false,
         remaining: 0,
@@ -72,7 +72,7 @@ export class RateLimiter {
 
     return {
       allowed: true,
-      remaining: this.config.maxRequests - entry.count,
+      remaining: this._config.maxRequests - entry.count,
       resetTime: entry.resetTime,
     };
   }
@@ -81,14 +81,12 @@ export class RateLimiter {
    * Record a request (for skip options)
    */
   record(identifier: string, success: boolean) {
-    if (
-      (success && this.config.skipSuccessfulRequests) ||
-      (!success && this.config.skipFailedRequests)
-    ) {
+    if ((success && this._config.skipSuccessfulRequests) || (!success && this._config.skipFailedRequests)) {
       return;
     }
 
-    const entry = this.store[identifier];
+    const entry = this._store[identifier];
+
     if (entry) {
       entry.count++;
     }
@@ -98,17 +96,17 @@ export class RateLimiter {
    * Reset rate limit for an identifier
    */
   reset(identifier: string) {
-    delete this.store[identifier];
+    delete this._store[identifier];
   }
 
   /**
    * Clean up expired entries
    */
-  private cleanup() {
+  private _cleanup() {
     const now = Date.now();
-    Object.keys(this.store).forEach((key) => {
-      if (now > this.store[key].resetTime) {
-        delete this.store[key];
+    Object.keys(this._store).forEach((key) => {
+      if (now > this._store[key].resetTime) {
+        delete this._store[key];
       }
     });
   }
@@ -117,14 +115,15 @@ export class RateLimiter {
    * Get current stats for an identifier
    */
   getStats(identifier: string): { count: number; remaining: number; resetTime: number } | null {
-    const entry = this.store[identifier];
+    const entry = this._store[identifier];
+
     if (!entry) {
       return null;
     }
 
     return {
       count: entry.count,
-      remaining: Math.max(0, this.config.maxRequests - entry.count),
+      remaining: Math.max(0, this._config.maxRequests - entry.count),
       resetTime: entry.resetTime,
     };
   }
@@ -179,8 +178,10 @@ export function createRateLimitMiddleware(config: RateLimitConfig) {
  * Get identifier from request (IP address or user ID)
  */
 function getIdentifier(request: Request): string {
-  // Try to get user ID from session/auth
-  // For now, use IP address
+  /*
+   * Try to get user ID from session/auth
+   * For now, use IP address
+   */
   const forwarded = request.headers.get('x-forwarded-for');
   const ip = forwarded ? forwarded.split(',')[0] : request.headers.get('x-real-ip') || 'unknown';
 

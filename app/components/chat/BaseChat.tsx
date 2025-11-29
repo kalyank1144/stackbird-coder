@@ -101,6 +101,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
       input = '',
       enhancingPrompt,
       handleInputChange,
+      description,
 
       // promptEnhanced,
       enhancePrompt,
@@ -373,11 +374,12 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         {/* Main content area with proper sidebar offset */}
         <div
           className={classNames(
-            'flex flex-col lg:flex-row overflow-y-auto h-full transition-all duration-300 ml-[72px]',
+            styles.Chat,
+            'flex flex-col flex-grow h-full relative ml-[72px]',
             showWorkbench ? 'w-[var(--chat-min-width)]' : 'w-[calc(100%-72px)]',
           )}
         >
-          <div className={classNames(styles.Chat, 'flex flex-col flex-grow h-full relative')}>
+          <div className="flex flex-col h-full">
             {!chatStarted && (
               <div id="intro" className="mt-[10vh] max-w-3xl mx-auto text-center px-4 lg:px-0">
                 {/* Animated Logo */}
@@ -549,15 +551,15 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
               </div>
             </div>
           </div>
-          <ClientOnly>
-            {() => (
-              <>
-                <Workbench chatStarted={chatStarted} isStreaming={isStreaming} setSelectedElement={setSelectedElement} />
-                {chatStarted && <WorkbenchPersistence chatId={description} projectName={description} />}
-              </>
-            )}
-          </ClientOnly>
         </div>
+        <ClientOnly>
+          {() => (
+            <>
+              <Workbench chatStarted={chatStarted} isStreaming={isStreaming} setSelectedElement={setSelectedElement} />
+              {chatStarted && <WorkbenchPersistence chatId={description} projectName={description} />}
+            </>
+          )}
+        </ClientOnly>
       </div>
     );
 

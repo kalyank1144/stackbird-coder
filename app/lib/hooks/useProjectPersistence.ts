@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import { useEffect, useRef, useCallback } from 'react';
 import { toast } from 'react-toastify';
 
@@ -26,12 +27,9 @@ interface UseProjectPersistenceOptions {
   enabled?: boolean;
 }
 
-export function useProjectPersistence(
-  projectData: ProjectData,
-  options: UseProjectPersistenceOptions = {},
-) {
+export function useProjectPersistence(projectData: ProjectData, options: UseProjectPersistenceOptions = {}) {
   const { projectId, autoSaveInterval = 30000, enabled = true } = options;
-  
+
   const lastSavedRef = useRef<string>('');
   const autoSaveTimerRef = useRef<NodeJS.Timeout | null>(null);
   const isSavingRef = useRef(false);
@@ -39,109 +37,112 @@ export function useProjectPersistence(
   /**
    * Save project to Supabase
    */
-  const saveProject = useCallback(async (showToast = true) => {
-    if (!enabled || isSavingRef.current) {
-      return { success: false, message: 'Save already in progress' };
-    }
-
-    try {
-      isSavingRef.current = true;
-      
-      const currentData = JSON.stringify(projectData);
-      
-      // Skip if no changes
-      if (currentData === lastSavedRef.current) {
-        return { success: true, message: 'No changes to save' };
+  const saveProject = useCallback(
+    async (showToast = true) => {
+      if (!enabled || isSavingRef.current) {
+        return { success: false, message: 'Save already in progress' };
       }
 
-      // Determine if creating new project or updating existing
-      const action = projectId ? 'update' : 'create';
-      const endpoint = '/api/projects';
+      try {
+        isSavingRef.current = true;
 
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          action,
-          projectId,
-          projectData: {
-            name: projectData.name,
-            description: projectData.description,
-            template_type: projectData.template_type,
-            framework: projectData.framework,
-            language: projectData.language,
-            metadata: projectData.metadata,
-            tags: projectData.tags,
-          },
-        }),
-      });
+        const currentData = JSON.stringify(projectData);
 
-      if (!response.ok) {
-        throw new Error('Failed to save project');
-      }
+        // Skip if no changes
+        if (currentData === lastSavedRef.current) {
+          return { success: true, message: 'No changes to save' };
+        }
 
-      const result = await response.json();
-      const savedProjectId = result.project?.id || projectId;
+        // Determine if creating new project or updating existing
+        const action = projectId ? 'update' : 'create';
+        const endpoint = '/api/projects';
 
-      // Save files
-      if (projectData.files && projectData.files.length > 0) {
-        const filesResponse = await fetch(endpoint, {
+        const response = await fetch(endpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            action: 'saveFiles',
-            projectId: savedProjectId,
-            files: projectData.files.map((file) => ({
-              file_path: file.path,
-              file_name: file.name,
-              content: file.content,
-              file_type: file.type || 'file',
-              size_bytes: file.content?.length || 0,
-            })),
+            action,
+            projectId,
+            projectData: {
+              name: projectData.name,
+              description: projectData.description,
+              template_type: projectData.template_type,
+              framework: projectData.framework,
+              language: projectData.language,
+              metadata: projectData.metadata,
+              tags: projectData.tags,
+            },
           }),
         });
 
-        if (!filesResponse.ok) {
-          throw new Error('Failed to save project files');
+        if (!response.ok) {
+          throw new Error('Failed to save project');
         }
+
+        const result = (await response.json()) as { project?: { id?: string } };
+        const savedProjectId = result.project?.id || projectId;
+
+        // Save files
+        if (projectData.files && projectData.files.length > 0) {
+          const filesResponse = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              action: 'saveFiles',
+              projectId: savedProjectId,
+              files: projectData.files.map((file) => ({
+                file_path: file.path,
+                file_name: file.name,
+                content: file.content,
+                file_type: file.type || 'file',
+                size_bytes: file.content?.length || 0,
+              })),
+            }),
+          });
+
+          if (!filesResponse.ok) {
+            throw new Error('Failed to save project files');
+          }
+        }
+
+        lastSavedRef.current = currentData;
+
+        if (showToast) {
+          toast.success('Project saved successfully', {
+            position: 'bottom-right',
+            autoClose: 2000,
+          });
+        }
+
+        return {
+          success: true,
+          message: 'Project saved successfully',
+          projectId: savedProjectId,
+        };
+      } catch (error: any) {
+        console.error('Error saving project:', error);
+
+        if (showToast) {
+          toast.error(`Failed to save project: ${error.message}`, {
+            position: 'bottom-right',
+            autoClose: 5000,
+          });
+        }
+
+        return {
+          success: false,
+          message: error.message || 'Failed to save project',
+        };
+      } finally {
+        isSavingRef.current = false;
       }
-
-      lastSavedRef.current = currentData;
-
-      if (showToast) {
-        toast.success('Project saved successfully', {
-          position: 'bottom-right',
-          autoClose: 2000,
-        });
-      }
-
-      return {
-        success: true,
-        message: 'Project saved successfully',
-        projectId: savedProjectId,
-      };
-    } catch (error: any) {
-      console.error('Error saving project:', error);
-      
-      if (showToast) {
-        toast.error(`Failed to save project: ${error.message}`, {
-          position: 'bottom-right',
-          autoClose: 5000,
-        });
-      }
-
-      return {
-        success: false,
-        message: error.message || 'Failed to save project',
-      };
-    } finally {
-      isSavingRef.current = false;
-    }
-  }, [projectData, projectId, enabled]);
+    },
+    [projectData, projectId, enabled],
+  );
 
   /**
    * Load project from Supabase
@@ -154,7 +155,7 @@ export function useProjectPersistence(
         throw new Error('Failed to load project');
       }
 
-      const result = await response.json();
+      const result = (await response.json()) as { project?: any };
       const project = result.project;
 
       // Load project files
@@ -173,7 +174,7 @@ export function useProjectPersistence(
         throw new Error('Failed to load project files');
       }
 
-      const filesResult = await filesResponse.json();
+      const filesResult = (await filesResponse.json()) as { files?: any[] };
       const files = filesResult.files || [];
 
       return {
@@ -190,7 +191,7 @@ export function useProjectPersistence(
       };
     } catch (error: any) {
       console.error('Error loading project:', error);
-      
+
       toast.error(`Failed to load project: ${error.message}`, {
         position: 'bottom-right',
         autoClose: 5000,
@@ -206,52 +207,55 @@ export function useProjectPersistence(
   /**
    * Create project snapshot
    */
-  const createSnapshot = useCallback(async (snapshotName: string, description?: string) => {
-    if (!projectId) {
-      toast.error('Cannot create snapshot: Project not saved', {
-        position: 'bottom-right',
-      });
-      return { success: false, message: 'Project not saved' };
-    }
-
-    try {
-      const response = await fetch('/api/projects', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          action: 'createSnapshot',
-          projectId,
-          snapshotName,
-          snapshotDescription: description,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create snapshot');
+  const createSnapshot = useCallback(
+    async (snapshotName: string, description?: string) => {
+      if (!projectId) {
+        toast.error('Cannot create snapshot: Project not saved', {
+          position: 'bottom-right',
+        });
+        return { success: false, message: 'Project not saved' };
       }
 
-      toast.success('Snapshot created successfully', {
-        position: 'bottom-right',
-        autoClose: 2000,
-      });
+      try {
+        const response = await fetch('/api/projects', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: 'createSnapshot',
+            projectId,
+            snapshotName,
+            snapshotDescription: description,
+          }),
+        });
 
-      return { success: true, message: 'Snapshot created successfully' };
-    } catch (error: any) {
-      console.error('Error creating snapshot:', error);
-      
-      toast.error(`Failed to create snapshot: ${error.message}`, {
-        position: 'bottom-right',
-        autoClose: 5000,
-      });
+        if (!response.ok) {
+          throw new Error('Failed to create snapshot');
+        }
 
-      return {
-        success: false,
-        message: error.message || 'Failed to create snapshot',
-      };
-    }
-  }, [projectId]);
+        toast.success('Snapshot created successfully', {
+          position: 'bottom-right',
+          autoClose: 2000,
+        });
+
+        return { success: true, message: 'Snapshot created successfully' };
+      } catch (error: any) {
+        console.error('Error creating snapshot:', error);
+
+        toast.error(`Failed to create snapshot: ${error.message}`, {
+          position: 'bottom-right',
+          autoClose: 5000,
+        });
+
+        return {
+          success: false,
+          message: error.message || 'Failed to create snapshot',
+        };
+      }
+    },
+    [projectId],
+  );
 
   /**
    * Auto-save effect
@@ -261,9 +265,8 @@ export function useProjectPersistence(
       return;
     }
 
-    // Clear existing timer
-    if (autoSaveTimerRef.current) {
-      clearInterval(autoSaveTimerRef.current);
+    if (!enabled) {
+      return undefined;
     }
 
     // Set up auto-save
@@ -293,7 +296,9 @@ export function useProjectPersistence(
    * Save on visibility change (when user switches tabs)
    */
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled) {
+      return undefined;
+    }
 
     const handleVisibilityChange = () => {
       if (document.hidden) {
@@ -312,11 +317,13 @@ export function useProjectPersistence(
    * Save on beforeunload (when user closes tab/window)
    */
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled) {
+      return undefined;
+    }
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       const currentData = JSON.stringify(projectData);
-      
+
       if (currentData !== lastSavedRef.current) {
         e.preventDefault();
         e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';

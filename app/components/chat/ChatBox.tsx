@@ -295,7 +295,6 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
                 {props.chatMode === 'discuss' ? <span className="text-xs font-medium">Discuss</span> : <span />}
               </IconButton>
             )}
-
           </div>
           {props.input.length > 3 ? (
             <div className="text-xs text-slate-400 dark:text-slate-500 hidden sm:block">

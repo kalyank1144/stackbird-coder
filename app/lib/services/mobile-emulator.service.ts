@@ -20,14 +20,16 @@ export interface EmulatorConfig {
 }
 
 export class MobileEmulatorService {
-  private static runningEmulators: Map<string, EmulatorDevice> = new Map();
+  private static _runningEmulators: Map<string, EmulatorDevice> = new Map();
 
   /**
    * Get list of available iOS simulators
    */
   static async getIOSSimulators(): Promise<EmulatorDevice[]> {
-    // In a real implementation, this would call `xcrun simctl list devices`
-    // For now, return mock data from Supabase
+    /*
+     * In a real implementation, this would call `xcrun simctl list devices`
+     * For now, return mock data from Supabase
+     */
     return [
       {
         id: 'iphone-15-pro',
@@ -68,8 +70,10 @@ export class MobileEmulatorService {
    * Get list of available Android emulators
    */
   static async getAndroidEmulators(): Promise<EmulatorDevice[]> {
-    // In a real implementation, this would call `emulator -list-avds`
-    // For now, return mock data from Supabase
+    /*
+     * In a real implementation, this would call `emulator -list-avds`
+     * For now, return mock data from Supabase
+     */
     return [
       {
         id: 'pixel-8-pro',
@@ -110,10 +114,7 @@ export class MobileEmulatorService {
    * Get all available devices
    */
   static async getAllDevices(): Promise<EmulatorDevice[]> {
-    const [ios, android] = await Promise.all([
-      this.getIOSSimulators(),
-      this.getAndroidEmulators(),
-    ]);
+    const [ios, android] = await Promise.all([this.getIOSSimulators(), this.getAndroidEmulators()]);
     return [...ios, ...android];
   }
 
@@ -129,21 +130,23 @@ export class MobileEmulatorService {
         return { success: false, message: 'Device not found' };
       }
 
-      if (this.runningEmulators.has(deviceId)) {
+      if (this._runningEmulators.has(deviceId)) {
         return { success: false, message: 'Emulator already running' };
       }
 
-      // In a real implementation, this would:
-      // - For iOS: Run `xcrun simctl boot <device-id>`
-      // - For Android: Run `emulator -avd <device-name>`
-      // - For Flutter: Run `flutter run -d <device-id>`
-      // - For Expo: Run `expo start` and connect to device
+      /*
+       * In a real implementation, this would:
+       * - For iOS: Run `xcrun simctl boot <device-id>`
+       * - For Android: Run `emulator -avd <device-name>`
+       * - For Flutter: Run `flutter run -d <device-id>`
+       * - For Expo: Run `expo start` and connect to device
+       */
 
       // Simulate starting emulator
       device.status = 'running';
-      this.runningEmulators.set(deviceId, device);
+      this._runningEmulators.set(deviceId, device);
 
-      const port = 8081 + this.runningEmulators.size;
+      const port = 8081 + this._runningEmulators.size;
 
       return {
         success: true,
@@ -163,18 +166,20 @@ export class MobileEmulatorService {
    */
   static async stopEmulator(deviceId: string): Promise<{ success: boolean; message: string }> {
     try {
-      const device = this.runningEmulators.get(deviceId);
+      const device = this._runningEmulators.get(deviceId);
 
       if (!device) {
         return { success: false, message: 'Emulator not running' };
       }
 
-      // In a real implementation, this would:
-      // - For iOS: Run `xcrun simctl shutdown <device-id>`
-      // - For Android: Run `adb -s <device-id> emu kill`
+      /*
+       * In a real implementation, this would:
+       * - For iOS: Run `xcrun simctl shutdown <device-id>`
+       * - For Android: Run `adb -s <device-id> emu kill`
+       */
 
       device.status = 'available';
-      this.runningEmulators.delete(deviceId);
+      this._runningEmulators.delete(deviceId);
 
       return {
         success: true,
@@ -192,7 +197,7 @@ export class MobileEmulatorService {
    * Get running emulators
    */
   static getRunningEmulators(): EmulatorDevice[] {
-    return Array.from(this.runningEmulators.values());
+    return Array.from(this._runningEmulators.values());
   }
 
   /**
@@ -200,22 +205,24 @@ export class MobileEmulatorService {
    */
   static async deployToEmulator(
     deviceId: string,
-    projectPath: string,
-    framework: 'flutter' | 'expo' | 'react-native',
+    _projectPath: string,
+    _framework: 'flutter' | 'expo' | 'react-native',
   ): Promise<{ success: boolean; message: string; url?: string }> {
     try {
-      const device = this.runningEmulators.get(deviceId);
+      const device = this._runningEmulators.get(deviceId);
 
       if (!device) {
         return { success: false, message: 'Emulator not running. Please start it first.' };
       }
 
-      // In a real implementation, this would:
-      // - For Flutter: Run `flutter run -d <device-id>`
-      // - For Expo: Run `expo start` and open on device
-      // - For React Native: Run `react-native run-ios` or `react-native run-android`
+      /*
+       * In a real implementation, this would:
+       * - For Flutter: Run `flutter run -d <device-id>`
+       * - For Expo: Run `expo start` and open on device
+       * - For React Native: Run `react-native run-ios` or `react-native run-android`
+       */
 
-      const port = 8081 + Array.from(this.runningEmulators.keys()).indexOf(deviceId);
+      const port = 8081 + Array.from(this._runningEmulators.keys()).indexOf(deviceId);
       const url = `http://localhost:${port}`;
 
       return {
@@ -236,7 +243,7 @@ export class MobileEmulatorService {
    */
   static async enableHotReload(deviceId: string): Promise<{ success: boolean; message: string }> {
     try {
-      const device = this.runningEmulators.get(deviceId);
+      const device = this._runningEmulators.get(deviceId);
 
       if (!device) {
         return { success: false, message: 'Emulator not running' };
@@ -260,15 +267,17 @@ export class MobileEmulatorService {
    */
   static async takeScreenshot(deviceId: string): Promise<{ success: boolean; message: string; imageData?: string }> {
     try {
-      const device = this.runningEmulators.get(deviceId);
+      const device = this._runningEmulators.get(deviceId);
 
       if (!device) {
         return { success: false, message: 'Emulator not running' };
       }
 
-      // In a real implementation, this would:
-      // - For iOS: Run `xcrun simctl io <device-id> screenshot <filename>`
-      // - For Android: Run `adb -s <device-id> shell screencap -p /sdcard/screenshot.png`
+      /*
+       * In a real implementation, this would:
+       * - For iOS: Run `xcrun simctl io <device-id> screenshot <filename>`
+       * - For Android: Run `adb -s <device-id> shell screencap -p /sdcard/screenshot.png`
+       */
 
       return {
         success: true,
@@ -288,23 +297,21 @@ export class MobileEmulatorService {
    */
   static async getDeviceLogs(deviceId: string): Promise<{ success: boolean; logs?: string[]; error?: string }> {
     try {
-      const device = this.runningEmulators.get(deviceId);
+      const device = this._runningEmulators.get(deviceId);
 
       if (!device) {
         return { success: false, error: 'Emulator not running' };
       }
 
-      // In a real implementation, this would:
-      // - For iOS: Run `xcrun simctl spawn <device-id> log stream`
-      // - For Android: Run `adb -s <device-id> logcat`
+      /*
+       * In a real implementation, this would:
+       * - For iOS: Run `xcrun simctl spawn <device-id> log stream`
+       * - For Android: Run `adb -s <device-id> logcat`
+       */
 
       return {
         success: true,
-        logs: [
-          '[INFO] App started successfully',
-          '[DEBUG] Hot reload enabled',
-          '[INFO] Connected to backend',
-        ],
+        logs: ['[INFO] App started successfully', '[DEBUG] Hot reload enabled', '[INFO] Connected to backend'],
       };
     } catch (error: any) {
       return {

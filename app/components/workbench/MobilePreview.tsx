@@ -117,13 +117,16 @@ export function MobilePreview({ url, onClose }: MobilePreviewProps) {
         <div className="flex items-center justify-between p-4 border-b border-bolt-elements-borderColor">
           <div className="flex items-center gap-4">
             <h2 className="text-lg font-semibold text-bolt-elements-textPrimary">Mobile Preview</h2>
-            
+
             {/* Device Selector */}
             <select
               value={selectedDevice.id}
               onChange={(e) => {
                 const device = MOBILE_DEVICES.find((d) => d.id === e.target.value);
-                if (device) setSelectedDevice(device);
+
+                if (device) {
+                  setSelectedDevice(device);
+                }
               }}
               className="px-3 py-1.5 bg-bolt-elements-background-depth-2 border border-bolt-elements-borderColor rounded-md text-sm text-bolt-elements-textPrimary"
             >
@@ -137,18 +140,10 @@ export function MobilePreview({ url, onClose }: MobilePreviewProps) {
 
           <div className="flex items-center gap-2">
             {/* Orientation Toggle */}
-            <IconButton
-              icon="i-ph:device-rotate"
-              title="Rotate Device"
-              onClick={toggleOrientation}
-            />
+            <IconButton icon="i-ph:device-rotate" title="Rotate Device" onClick={toggleOrientation} />
 
             {/* QR Code Toggle */}
-            <IconButton
-              icon="i-ph:qr-code"
-              title="Show QR Code"
-              onClick={() => setShowQR(!showQR)}
-            />
+            <IconButton icon="i-ph:qr-code" title="Show QR Code" onClick={() => setShowQR(!showQR)} />
 
             {/* Scale Controls */}
             <div className="flex items-center gap-1 px-2 py-1 bg-bolt-elements-background-depth-2 rounded-md">
@@ -170,11 +165,7 @@ export function MobilePreview({ url, onClose }: MobilePreviewProps) {
             </div>
 
             {/* Close Button */}
-            <IconButton
-              icon="i-ph:x"
-              title="Close"
-              onClick={onClose}
-            />
+            <IconButton icon="i-ph:x" title="Close" onClick={onClose} />
           </div>
         </div>
 
@@ -187,9 +178,7 @@ export function MobilePreview({ url, onClose }: MobilePreviewProps) {
               <p className="text-sm text-gray-600 max-w-xs text-center">
                 Scan this QR code with your mobile device to test the app
               </p>
-              <code className="text-xs bg-gray-100 px-3 py-2 rounded break-all max-w-xs">
-                {url}
-              </code>
+              <code className="text-xs bg-gray-100 px-3 py-2 rounded break-all max-w-xs">{url}</code>
             </div>
           ) : (
             <div
@@ -230,17 +219,11 @@ export function MobilePreview({ url, onClose }: MobilePreviewProps) {
             <span>
               {width} × {height}
             </span>
-            <span>
-              {selectedDevice.devicePixelRatio}x DPR
-            </span>
-            <span className="capitalize">
-              {selectedDevice.platform}
-            </span>
+            <span>{selectedDevice.devicePixelRatio}x DPR</span>
+            <span className="capitalize">{selectedDevice.platform}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-bolt-elements-textTertiary">
-              Press ESC to close
-            </span>
+            <span className="text-bolt-elements-textTertiary">Press ESC to close</span>
           </div>
         </div>
       </div>

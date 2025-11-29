@@ -9,7 +9,6 @@ import {
   deployToSimulator,
   hotReloadSimulator,
   type Simulator,
-  type SimulatorPlatform,
 } from '~/lib/services/simulator.service';
 
 interface SimulatorControlsProps {
@@ -29,17 +28,16 @@ export function SimulatorControls({ projectPath, projectType }: SimulatorControl
 
   // Load available simulators
   useEffect(() => {
-    if (!isMobileProject) return;
+    if (!isMobileProject) {
+      return;
+    }
 
     loadSimulators();
   }, [isMobileProject]);
 
   const loadSimulators = async () => {
     try {
-      const [ios, android] = await Promise.all([
-        listSimulators('ios'),
-        listSimulators('android'),
-      ]);
+      const [ios, android] = await Promise.all([listSimulators('ios'), listSimulators('android')]);
 
       setIosSimulators(ios);
       setAndroidSimulators(android);
@@ -73,7 +71,9 @@ export function SimulatorControls({ projectPath, projectType }: SimulatorControl
   };
 
   const handleStopSimulator = async () => {
-    if (!selectedSimulator) return;
+    if (!selectedSimulator) {
+      return;
+    }
 
     setIsLoading(true);
 
@@ -102,11 +102,7 @@ export function SimulatorControls({ projectPath, projectType }: SimulatorControl
     setIsLoading(true);
 
     try {
-      const result = await deployToSimulator(
-        selectedSimulator.platform,
-        selectedSimulator.id,
-        projectPath
-      );
+      const result = await deployToSimulator(selectedSimulator.platform, selectedSimulator.id, projectPath);
 
       if (result.success) {
         toast.success(result.message);
@@ -121,7 +117,9 @@ export function SimulatorControls({ projectPath, projectType }: SimulatorControl
   };
 
   const handleHotReload = async () => {
-    if (!selectedSimulator) return;
+    if (!selectedSimulator) {
+      return;
+    }
 
     setIsLoading(true);
 
@@ -183,9 +181,7 @@ export function SimulatorControls({ projectPath, projectType }: SimulatorControl
                       >
                         <span className="i-ph:apple-logo" />
                         <span>{sim.name}</span>
-                        {sim.status === 'running' && (
-                          <span className="ml-auto w-2 h-2 rounded-full bg-green-500" />
-                        )}
+                        {sim.status === 'running' && <span className="ml-auto w-2 h-2 rounded-full bg-green-500" />}
                       </DropdownMenu.Item>
                     ))}
                   </>
@@ -194,7 +190,9 @@ export function SimulatorControls({ projectPath, projectType }: SimulatorControl
                 {/* Android Emulators */}
                 {androidSimulators.length > 0 && (
                   <>
-                    {iosSimulators.length > 0 && <DropdownMenu.Separator className="h-px bg-stackbird-elements-borderColor my-1" />}
+                    {iosSimulators.length > 0 && (
+                      <DropdownMenu.Separator className="h-px bg-stackbird-elements-borderColor my-1" />
+                    )}
                     <div className="px-3 py-1.5 text-xs font-semibold text-stackbird-elements-item-contentDimmed uppercase">
                       Android Emulators
                     </div>
@@ -206,9 +204,7 @@ export function SimulatorControls({ projectPath, projectType }: SimulatorControl
                       >
                         <span className="i-ph:android-logo" />
                         <span>{sim.name}</span>
-                        {sim.status === 'running' && (
-                          <span className="ml-auto w-2 h-2 rounded-full bg-green-500" />
-                        )}
+                        {sim.status === 'running' && <span className="ml-auto w-2 h-2 rounded-full bg-green-500" />}
                       </DropdownMenu.Item>
                     ))}
                   </>
@@ -266,11 +262,7 @@ export function SimulatorControls({ projectPath, projectType }: SimulatorControl
       {/* Status Indicator */}
       {selectedSimulator && (
         <div className="flex items-center gap-2 ml-2 px-2 py-1 rounded bg-stackbird-elements-background-depth-4 text-xs">
-          <span
-            className={`w-2 h-2 rounded-full ${
-              isSimulatorRunning ? 'bg-green-500' : 'bg-gray-500'
-            }`}
-          />
+          <span className={`w-2 h-2 rounded-full ${isSimulatorRunning ? 'bg-green-500' : 'bg-gray-500'}`} />
           <span className="text-stackbird-elements-item-contentDimmed">
             {isSimulatorRunning ? 'Running' : 'Stopped'}
           </span>

@@ -26,12 +26,13 @@ export interface SimulatorServiceResponse {
 export async function listSimulators(platform: SimulatorPlatform): Promise<Simulator[]> {
   try {
     const response = await fetch(`/api/simulator/list?platform=${platform}`);
-    
+
     if (!response.ok) {
       throw new Error('Failed to fetch simulators');
     }
-    
-    const data = await response.json();
+
+    const data = (await response.json()) as { simulators?: Simulator[] };
+
     return data.simulators || [];
   } catch (error) {
     console.error('Error listing simulators:', error);
@@ -42,10 +43,7 @@ export async function listSimulators(platform: SimulatorPlatform): Promise<Simul
 /**
  * Start a simulator/emulator
  */
-export async function startSimulator(
-  platform: SimulatorPlatform,
-  deviceId: string
-): Promise<SimulatorServiceResponse> {
+export async function startSimulator(platform: SimulatorPlatform, deviceId: string): Promise<SimulatorServiceResponse> {
   try {
     const response = await fetch('/api/simulator/start', {
       method: 'POST',
@@ -54,13 +52,13 @@ export async function startSimulator(
       },
       body: JSON.stringify({ platform, deviceId }),
     });
-    
-    const data = await response.json();
-    
+
+    const data = (await response.json()) as { message?: string };
+
     if (!response.ok) {
       throw new Error(data.message || 'Failed to start simulator');
     }
-    
+
     return {
       success: true,
       message: `${platform === 'ios' ? 'iOS Simulator' : 'Android Emulator'} started successfully`,
@@ -77,10 +75,7 @@ export async function startSimulator(
 /**
  * Stop a running simulator/emulator
  */
-export async function stopSimulator(
-  platform: SimulatorPlatform,
-  deviceId: string
-): Promise<SimulatorServiceResponse> {
+export async function stopSimulator(platform: SimulatorPlatform, deviceId: string): Promise<SimulatorServiceResponse> {
   try {
     const response = await fetch('/api/simulator/stop', {
       method: 'POST',
@@ -89,13 +84,13 @@ export async function stopSimulator(
       },
       body: JSON.stringify({ platform, deviceId }),
     });
-    
-    const data = await response.json();
-    
+
+    const data = (await response.json()) as { message?: string };
+
     if (!response.ok) {
       throw new Error(data.message || 'Failed to stop simulator');
     }
-    
+
     return {
       success: true,
       message: 'Simulator stopped successfully',
@@ -115,7 +110,7 @@ export async function stopSimulator(
 export async function deployToSimulator(
   platform: SimulatorPlatform,
   deviceId: string,
-  projectPath: string
+  projectPath: string,
 ): Promise<SimulatorServiceResponse> {
   try {
     const response = await fetch('/api/simulator/deploy', {
@@ -125,13 +120,13 @@ export async function deployToSimulator(
       },
       body: JSON.stringify({ platform, deviceId, projectPath }),
     });
-    
-    const data = await response.json();
-    
+
+    const data = (await response.json()) as { message?: string };
+
     if (!response.ok) {
       throw new Error(data.message || 'Failed to deploy to simulator');
     }
-    
+
     return {
       success: true,
       message: 'App deployed successfully',
@@ -148,18 +143,16 @@ export async function deployToSimulator(
 /**
  * Get simulator status
  */
-export async function getSimulatorStatus(
-  platform: SimulatorPlatform,
-  deviceId: string
-): Promise<SimulatorStatus> {
+export async function getSimulatorStatus(platform: SimulatorPlatform, deviceId: string): Promise<SimulatorStatus> {
   try {
     const response = await fetch(`/api/simulator/status?platform=${platform}&deviceId=${deviceId}`);
-    
+
     if (!response.ok) {
       return 'error';
     }
-    
-    const data = await response.json();
+
+    const data = (await response.json()) as { status?: SimulatorStatus };
+
     return data.status || 'stopped';
   } catch (error) {
     console.error('Error getting simulator status:', error);
@@ -172,7 +165,7 @@ export async function getSimulatorStatus(
  */
 export async function hotReloadSimulator(
   platform: SimulatorPlatform,
-  deviceId: string
+  deviceId: string,
 ): Promise<SimulatorServiceResponse> {
   try {
     const response = await fetch('/api/simulator/reload', {
@@ -182,13 +175,13 @@ export async function hotReloadSimulator(
       },
       body: JSON.stringify({ platform, deviceId }),
     });
-    
-    const data = await response.json();
-    
+
+    const data = (await response.json()) as { message?: string };
+
     if (!response.ok) {
       throw new Error(data.message || 'Failed to reload app');
     }
-    
+
     return {
       success: true,
       message: 'App reloaded successfully',

@@ -42,7 +42,16 @@ export async function loader({ request }: LoaderFunctionArgs) {
  */
 export async function action({ request }: ActionFunctionArgs) {
   try {
-    const body = await request.json();
+    const body = (await request.json()) as {
+      action?: string;
+      projectId?: string;
+      projectData?: any;
+      files?: any[];
+      snapshotName?: string;
+      snapshotDescription?: string;
+      snapshotId?: string;
+      createdBy?: string;
+    };
     const { action, projectId, projectData, files, snapshotName, snapshotDescription, snapshotId, createdBy } = body;
 
     switch (action) {

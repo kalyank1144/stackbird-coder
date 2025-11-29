@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useStore } from '@nanostores/react';
 import { workbenchStore } from '~/lib/stores/workbench';
 import { useProjectPersistence } from '~/lib/hooks/useProjectPersistence';
-import { toast } from 'react-toastify';
 
 interface WorkbenchPersistenceProps {
   chatId?: string;
@@ -15,7 +14,6 @@ interface WorkbenchPersistenceProps {
  */
 export function WorkbenchPersistence({ chatId, projectName }: WorkbenchPersistenceProps) {
   const files = useStore(workbenchStore.files);
-  const [projectId, setProjectId] = useState<string | undefined>();
 
   // Convert workbench files to project data format
 
@@ -24,12 +22,14 @@ export function WorkbenchPersistence({ chatId, projectName }: WorkbenchPersisten
     description: `Auto-saved project from chat ${chatId}`,
     template_type: 'custom',
     language: 'typescript',
-    files: Object.entries(files).map(([path, dirent]) => ({
-      path,
-      name: path.split('/').pop() || path,
-      content: dirent.content || '',
-      type: dirent.type,
-    })),
+    files: Object.entries(files)
+      .filter(([, dirent]) => dirent?.type === 'file')
+      .map(([path, dirent]) => ({
+        path,
+        name: path.split('/').pop() || path,
+        content: dirent?.type === 'file' ? dirent.content : '',
+        type: dirent?.type || 'file',
+      })),
     metadata: {
       chatId,
       lastModified: new Date().toISOString(),
@@ -37,8 +37,7 @@ export function WorkbenchPersistence({ chatId, projectName }: WorkbenchPersisten
     tags: ['auto-saved'],
   };
 
-  const { saveProject, hasUnsavedChanges, isSaving } = useProjectPersistence(projectData, {
-    projectId,
+  const { saveProject, hasUnsavedChanges } = useProjectPersistence(projectData, {
     autoSaveInterval: 30000, // Auto-save every 30 seconds
     enabled: true,
   });
@@ -53,6 +52,7 @@ export function WorkbenchPersistence({ chatId, projectName }: WorkbenchPersisten
     };
 
     window.addEventListener('keydown', handleKeyDown);
+
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [saveProject]);
 
@@ -62,11 +62,13 @@ export function WorkbenchPersistence({ chatId, projectName }: WorkbenchPersisten
       // Update document title to show unsaved changes
       const originalTitle = document.title;
       document.title = `● ${originalTitle}`;
-      
+
       return () => {
         document.title = originalTitle;
       };
     }
+
+    return undefined;
   }, [hasUnsavedChanges]);
 
   return null; // This is a logic-only component

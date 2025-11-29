@@ -730,7 +730,7 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
         <div className="flex items-center gap-2">
           {/* Mobile Simulator Controls */}
           <SimulatorControls projectPath="/tmp/project" projectType="expo" />
-          
+
           <IconButton
             icon="i-ph:devices"
             onClick={toggleDeviceMode}

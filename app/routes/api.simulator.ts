@@ -11,34 +11,63 @@ const execAsync = promisify(exec);
  */
 
 export async function action({ request }: ActionFunctionArgs) {
-  const { action, platform, deviceId, projectPath } = await request.json();
+  const { action, platform, deviceId, projectPath } = (await request.json()) as {
+    action?: string;
+    platform?: string;
+    deviceId?: string;
+    projectPath?: string;
+  };
 
   try {
     switch (action) {
       case 'list':
+        if (!platform) {
+          return json({ success: false, message: 'Platform is required' }, { status: 400 });
+        }
+
         return await listSimulators(platform);
-      
+
       case 'start':
+        if (!platform || !deviceId) {
+          return json({ success: false, message: 'Platform and deviceId are required' }, { status: 400 });
+        }
+
         return await startSimulator(platform, deviceId);
-      
+
       case 'stop':
+        if (!platform || !deviceId) {
+          return json({ success: false, message: 'Platform and deviceId are required' }, { status: 400 });
+        }
+
         return await stopSimulator(platform, deviceId);
-      
+
       case 'deploy':
+        if (!platform || !deviceId || !projectPath) {
+          return json({ success: false, message: 'Platform, deviceId, and projectPath are required' }, { status: 400 });
+        }
+
         return await deployToSimulator(platform, deviceId, projectPath);
-      
+
       case 'status':
+        if (!platform || !deviceId) {
+          return json({ success: false, message: 'Platform and deviceId are required' }, { status: 400 });
+        }
+
         return await getSimulatorStatus(platform, deviceId);
-      
+
       case 'reload':
+        if (!platform || !deviceId) {
+          return json({ success: false, message: 'Platform and deviceId are required' }, { status: 400 });
+        }
+
         return await hotReloadSimulator(platform, deviceId);
-      
+
       default:
         return json({ success: false, message: 'Invalid action' }, { status: 400 });
     }
   } catch (error: any) {
     console.error('Simulator API error:', error);
-    return json({ success: false, message: error.message }, { status: 500 });
+    return json({ success: false, message: error?.message || 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -52,11 +81,11 @@ export async function loader({ request }: ActionFunctionArgs) {
     if (action === 'list' && platform) {
       return await listSimulators(platform);
     }
-    
+
     if (action === 'status' && platform && deviceId) {
       return await getSimulatorStatus(platform, deviceId);
     }
-    
+
     return json({ success: false, message: 'Invalid parameters' }, { status: 400 });
   } catch (error: any) {
     return json({ success: false, message: error.message }, { status: 500 });
@@ -70,9 +99,9 @@ async function listIOSSimulators() {
   try {
     const { stdout } = await execAsync('xcrun simctl list devices available --json');
     const data = JSON.parse(stdout);
-    
+
     const simulators: any[] = [];
-    
+
     // Parse iOS devices
     Object.entries(data.devices).forEach(([runtime, devices]: [string, any]) => {
       if (runtime.includes('iOS')) {
@@ -89,14 +118,14 @@ async function listIOSSimulators() {
         });
       }
     });
-    
+
     return json({ success: true, simulators });
-  } catch (error: any) {
+  } catch {
     // If xcrun not found, iOS development not available
-    return json({ 
-      success: false, 
+    return json({
+      success: false,
       message: 'iOS Simulator not available. Install Xcode on macOS.',
-      simulators: [] 
+      simulators: [],
     });
   }
 }
@@ -108,7 +137,7 @@ async function listAndroidEmulators() {
   try {
     const { stdout } = await execAsync('emulator -list-avds');
     const avds = stdout.trim().split('\n').filter(Boolean);
-    
+
     const simulators = avds.map((avd) => ({
       id: avd,
       name: avd,
@@ -116,13 +145,13 @@ async function listAndroidEmulators() {
       status: 'stopped', // Would need adb to check actual status
       deviceType: avd,
     }));
-    
+
     return json({ success: true, simulators });
-  } catch (error: any) {
-    return json({ 
-      success: false, 
+  } catch {
+    return json({
+      success: false,
       message: 'Android Emulator not available. Install Android Studio and SDK.',
-      simulators: [] 
+      simulators: [],
     });
   }
 }
@@ -136,7 +165,7 @@ async function listSimulators(platform: string) {
   } else if (platform === 'android') {
     return await listAndroidEmulators();
   }
-  
+
   return json({ success: false, message: 'Invalid platform' }, { status: 400 });
 }
 
@@ -147,10 +176,10 @@ async function startIOSSimulator(deviceId: string) {
   try {
     await execAsync(`xcrun simctl boot ${deviceId}`);
     await execAsync('open -a Simulator');
-    
-    return json({ 
-      success: true, 
-      message: 'iOS Simulator started successfully' 
+
+    return json({
+      success: true,
+      message: 'iOS Simulator started successfully',
     });
   } catch (error: any) {
     // Device might already be booted
@@ -158,7 +187,7 @@ async function startIOSSimulator(deviceId: string) {
       await execAsync('open -a Simulator');
       return json({ success: true, message: 'iOS Simulator already running' });
     }
-    
+
     throw error;
   }
 }
@@ -170,10 +199,10 @@ async function startAndroidEmulator(deviceId: string) {
   try {
     // Start emulator in background
     exec(`emulator -avd ${deviceId} &`);
-    
-    return json({ 
-      success: true, 
-      message: 'Android Emulator starting...' 
+
+    return json({
+      success: true,
+      message: 'Android Emulator starting...',
     });
   } catch (error: any) {
     throw error;
@@ -189,7 +218,7 @@ async function startSimulator(platform: string, deviceId: string) {
   } else if (platform === 'android') {
     return await startAndroidEmulator(deviceId);
   }
-  
+
   return json({ success: false, message: 'Invalid platform' }, { status: 400 });
 }
 
@@ -226,7 +255,7 @@ async function stopSimulator(platform: string, deviceId: string) {
   } else if (platform === 'android') {
     return await stopAndroidEmulator(deviceId);
   }
-  
+
   return json({ success: false, message: 'Invalid platform' }, { status: 400 });
 }
 
@@ -237,10 +266,12 @@ async function deployToIOSSimulator(deviceId: string, projectPath: string) {
   try {
     // For Expo
     await execAsync(`cd ${projectPath} && npx expo start --ios --device-id ${deviceId}`);
-    
-    // For Flutter
-    // await execAsync(`cd ${projectPath} && flutter run -d ${deviceId}`);
-    
+
+    /*
+     * For Flutter
+     * await execAsync(`cd ${projectPath} && flutter run -d ${deviceId}`);
+     */
+
     return json({ success: true, message: 'App deployed to iOS Simulator' });
   } catch (error: any) {
     throw error;
@@ -254,10 +285,12 @@ async function deployToAndroidEmulator(deviceId: string, projectPath: string) {
   try {
     // For Expo
     await execAsync(`cd ${projectPath} && npx expo start --android --device-id ${deviceId}`);
-    
-    // For Flutter
-    // await execAsync(`cd ${projectPath} && flutter run -d ${deviceId}`);
-    
+
+    /*
+     * For Flutter
+     * await execAsync(`cd ${projectPath} && flutter run -d ${deviceId}`);
+     */
+
     return json({ success: true, message: 'App deployed to Android Emulator' });
   } catch (error: any) {
     throw error;
@@ -273,7 +306,7 @@ async function deployToSimulator(platform: string, deviceId: string, projectPath
   } else if (platform === 'android') {
     return await deployToAndroidEmulator(deviceId, projectPath);
   }
-  
+
   return json({ success: false, message: 'Invalid platform' }, { status: 400 });
 }
 
@@ -285,23 +318,23 @@ async function getSimulatorStatus(platform: string, deviceId: string) {
     if (platform === 'ios') {
       const { stdout } = await execAsync(`xcrun simctl list devices | grep ${deviceId}`);
       const isBooted = stdout.includes('Booted');
-      
-      return json({ 
-        success: true, 
-        status: isBooted ? 'running' : 'stopped' 
+
+      return json({
+        success: true,
+        status: isBooted ? 'running' : 'stopped',
       });
     } else if (platform === 'android') {
       const { stdout } = await execAsync('adb devices');
       const isRunning = stdout.includes(deviceId);
-      
-      return json({ 
-        success: true, 
-        status: isRunning ? 'running' : 'stopped' 
+
+      return json({
+        success: true,
+        status: isRunning ? 'running' : 'stopped',
       });
     }
-    
+
     return json({ success: false, message: 'Invalid platform' }, { status: 400 });
-  } catch (error: any) {
+  } catch {
     return json({ success: true, status: 'stopped' });
   }
 }
@@ -309,15 +342,15 @@ async function getSimulatorStatus(platform: string, deviceId: string) {
 /**
  * Hot reload app in simulator
  */
-async function hotReloadSimulator(platform: string, deviceId: string) {
+async function hotReloadSimulator(platform: string, _deviceId: string) {
   try {
     if (platform === 'ios' || platform === 'android') {
       // For Expo - send reload command
       await execAsync('npx expo start --dev-client --clear');
-      
+
       return json({ success: true, message: 'App reloaded' });
     }
-    
+
     return json({ success: false, message: 'Invalid platform' }, { status: 400 });
   } catch (error: any) {
     throw error;

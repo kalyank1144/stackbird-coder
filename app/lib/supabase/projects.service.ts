@@ -1,4 +1,4 @@
-import { supabaseClient, supabaseAdmin } from './client';
+import { supabaseAdmin } from './client';
 
 export interface Project {
   id: string;
@@ -87,13 +87,18 @@ export class ProjectsService {
    */
   static async getProjects(userId?: string): Promise<{ data: Project[] | null; error: any }> {
     try {
-      let query = supabaseAdmin.from('projects').select('*').eq('status', 'active').order('last_opened_at', { ascending: false });
+      let query = supabaseAdmin
+        .from('projects')
+        .select('*')
+        .eq('status', 'active')
+        .order('last_opened_at', { ascending: false });
 
       if (userId) {
         query = query.eq('user_id', userId);
       }
 
       const { data, error } = await query;
+
       return { data, error };
     } catch (error) {
       console.error('Error fetching projects:', error);
@@ -118,7 +123,10 @@ export class ProjectsService {
   /**
    * Update a project
    */
-  static async updateProject(projectId: string, updates: Partial<Project>): Promise<{ data: Project | null; error: any }> {
+  static async updateProject(
+    projectId: string,
+    updates: Partial<Project>,
+  ): Promise<{ data: Project | null; error: any }> {
     try {
       const { data, error } = await supabaseAdmin
         .from('projects')
@@ -196,7 +204,11 @@ export class ProjectsService {
    */
   static async getProjectFiles(projectId: string): Promise<{ data: ProjectFile[] | null; error: any }> {
     try {
-      const { data, error } = await supabaseAdmin.from('project_files').select('*').eq('project_id', projectId).order('file_path');
+      const { data, error } = await supabaseAdmin
+        .from('project_files')
+        .select('*')
+        .eq('project_id', projectId)
+        .order('file_path');
 
       return { data, error };
     } catch (error) {
@@ -319,7 +331,11 @@ export class ProjectsService {
    */
   static async getProjectStats(projectId: string): Promise<{ data: any; error: any }> {
     try {
-      const { data, error } = await supabaseAdmin.from('project_stats').select('*').eq('project_id', projectId).single();
+      const { data, error } = await supabaseAdmin
+        .from('project_stats')
+        .select('*')
+        .eq('project_id', projectId)
+        .single();
 
       return { data, error };
     } catch (error) {

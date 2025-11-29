@@ -28,9 +28,7 @@ export function Header() {
             <div className="w-9 h-9 flex items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 text-white shadow-lg shadow-purple-500/30 group-hover:shadow-purple-500/50 transition-all">
               <span className="i-ph:bird-fill text-lg" />
             </div>
-            <span className="text-xl font-bold text-white">
-              stackbird
-            </span>
+            <span className="text-xl font-bold text-white">stackbird</span>
           </a>
         )}
         {authenticated && !chat.started && <div className="w-[72px]" />}
