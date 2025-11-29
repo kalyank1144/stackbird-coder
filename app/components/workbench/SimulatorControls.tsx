@@ -145,11 +145,11 @@ export function SimulatorControls({ projectPath, projectType }: SimulatorControl
   const allSimulators = [...iosSimulators, ...androidSimulators];
 
   return (
-    <div className="flex items-center gap-2 px-3 py-2 bg-stackbird-elements-background-depth-2 rounded-lg border border-stackbird-elements-borderColor">
+    <div className="flex items-center gap-2 px-3 py-2 bg-stackbird-elements-background-depth-1 rounded-lg border border-stackbird-elements-borderColor">
       {/* Simulator Selector */}
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
-          <button className="flex items-center gap-2 px-3 py-1.5 text-sm rounded-lg bg-stackbird-elements-background-depth-3 hover:bg-stackbird-elements-background-depth-4 transition-colors text-stackbird-elements-item-contentDefault border border-stackbird-elements-borderColor">
+          <button className="flex items-center gap-2 px-3 py-1.5 text-sm rounded-lg bg-stackbird-elements-background-depth-2 hover:bg-stackbird-elements-background-depth-3 transition-colors text-stackbird-elements-item-contentDefault border border-stackbird-elements-borderColor">
             <span className="i-ph:device-mobile text-lg" />
             <span>{selectedSimulator ? selectedSimulator.name : 'Select Simulator'}</span>
             <span className="i-ph:caret-down" />
@@ -158,7 +158,7 @@ export function SimulatorControls({ projectPath, projectType }: SimulatorControl
 
         <DropdownMenu.Portal>
           <DropdownMenu.Content
-            className="min-w-[250px] bg-stackbird-elements-background-depth-3 rounded-lg border border-stackbird-elements-borderColor shadow-lg p-1 z-50"
+            className="min-w-[250px] bg-stackbird-elements-background-depth-1 rounded-lg border border-stackbird-elements-borderColor shadow-lg p-1 z-50"
             sideOffset={5}
           >
             {allSimulators.length === 0 ? (
@@ -176,7 +176,7 @@ export function SimulatorControls({ projectPath, projectType }: SimulatorControl
                     {iosSimulators.map((sim) => (
                       <DropdownMenu.Item
                         key={sim.id}
-                        className="flex items-center gap-2 px-3 py-2 text-sm rounded hover:bg-stackbird-elements-background-depth-4 cursor-pointer outline-none text-stackbird-elements-item-contentDefault"
+                        className="flex items-center gap-2 px-3 py-2 text-sm rounded hover:bg-stackbird-elements-background-depth-2 cursor-pointer outline-none text-stackbird-elements-item-contentDefault"
                         onSelect={() => setSelectedSimulator(sim)}
                       >
                         <span className="i-ph:apple-logo" />
@@ -199,7 +199,7 @@ export function SimulatorControls({ projectPath, projectType }: SimulatorControl
                     {androidSimulators.map((sim) => (
                       <DropdownMenu.Item
                         key={sim.id}
-                        className="flex items-center gap-2 px-3 py-2 text-sm rounded hover:bg-stackbird-elements-background-depth-4 cursor-pointer outline-none text-stackbird-elements-item-contentDefault"
+                        className="flex items-center gap-2 px-3 py-2 text-sm rounded hover:bg-stackbird-elements-background-depth-2 cursor-pointer outline-none text-stackbird-elements-item-contentDefault"
                         onSelect={() => setSelectedSimulator(sim)}
                       >
                         <span className="i-ph:android-logo" />

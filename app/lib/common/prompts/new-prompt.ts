@@ -165,9 +165,16 @@ The year is 2025.
   5. Structure: <stackbirdArtifact id="kebab-case" title="Title"><stackbirdAction>...</stackbirdAction></stackbirdArtifact>
 
   Action Types:
-    - shell: Running commands (use --yes for npx/npm create, && for sequences, NEVER re-run dev servers)
+    - shell: Running commands (CRITICAL: ALWAYS use --yes for ALL npx/npm commands, && for sequences, NEVER re-run dev servers)
     - start: Starting project (use ONLY for project startup, LAST action)
     - file: Creating/updating files (add filePath and contentType attributes)
+
+  CRITICAL Command Requirements:
+    - ALL npx commands MUST use --yes flag: "npx --yes package-name"
+    - ALL npm install commands MUST use --yes flag: "npm install --yes"
+    - ALL npm create commands MUST use --yes flag: "npm create --yes"
+    - NEVER use interactive commands that require user input
+    - WebContainer CANNOT handle interactive prompts
 
   File Action Rules:
     - Only include new/modified files
@@ -185,6 +192,9 @@ The year is 2025.
     - Update package.json with ALL dependencies upfront
     - Run single install command
     - Avoid individual package installations
+    - CRITICAL: For React/Next.js/Vite React projects, ALWAYS include these in dependencies:
+      * "framer-motion" - for animations (required for preview functionality)
+      * "react-icons" - for icon components (commonly used in UI)
 </artifact_instructions>
 
 <design_instructions>

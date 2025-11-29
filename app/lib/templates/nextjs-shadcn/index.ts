@@ -25,7 +25,9 @@ export const nextjsShadcnTemplate: BundledTemplate = {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "framer-motion": "^12.23.24",
+    "react-icons": "^5.3.0"
   },
   "devDependencies": {
     "@types/node": "^22.9.0",

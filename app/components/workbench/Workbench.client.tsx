@@ -111,7 +111,7 @@ const FileModifiedDropdown = memo(
                 leaveFrom="transform scale-100 opacity-100"
                 leaveTo="transform scale-95 opacity-0"
               >
-                <Popover.Panel className="absolute right-0 z-20 mt-2 w-80 origin-top-right rounded-xl bg-stackbird-elements-background-depth-2 shadow-xl border border-stackbird-elements-borderColor">
+                <Popover.Panel className="absolute right-0 z-20 mt-2 w-80 origin-top-right rounded-xl bg-stackbird-elements-background-depth-1 shadow-xl border border-stackbird-elements-borderColor">
                   <div className="p-2">
                     <div className="relative mx-2 mb-2">
                       <input

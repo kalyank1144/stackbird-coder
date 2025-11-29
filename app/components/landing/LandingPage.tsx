@@ -5,7 +5,6 @@ import { AuthModal } from '~/components/auth/AuthModal';
 import { BaseChat } from '~/components/chat/BaseChat';
 import { Chat } from '~/components/chat/Chat.client';
 import { Header } from '~/components/header/Header';
-import BackgroundRays from '~/components/ui/BackgroundRays';
 
 export function LandingPage() {
   useEffect(() => {
@@ -17,8 +16,7 @@ export function LandingPage() {
    * The Header component will show Sign In / Sign Up buttons for non-authenticated users
    */
   return (
-    <div className="flex flex-col h-full w-full bg-[#1A1A1F]">
-      <BackgroundRays />
+    <div className="flex flex-col h-full w-full bg-stackbird-elements-background-depth-1">
       <Header />
       <ClientOnly fallback={<BaseChat />}>{() => <Chat />}</ClientOnly>
       <AuthModal />

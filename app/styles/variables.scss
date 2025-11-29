@@ -69,6 +69,7 @@
   --stackbird-elements-sidebar-buttonBackgroundDefault: theme('colors.alpha.accent.10');
   --stackbird-elements-sidebar-buttonBackgroundHover: theme('colors.alpha.accent.20');
   --stackbird-elements-sidebar-buttonText: theme('colors.accent.700');
+  --stackbird-elements-sidebar-background: theme('colors.white');
 
   --stackbird-elements-preview-addressBar-background: theme('colors.gray.100');
   --stackbird-elements-preview-addressBar-backgroundHover: theme('colors.alpha.gray.5');
@@ -109,77 +110,78 @@
 /* Color Tokens Dark Theme */
 :root,
 :root[data-theme='dark'] {
-  --stackbird-elements-borderColor: theme('colors.alpha.white.10');
-  --stackbird-elements-borderColorActive: theme('colors.accent.500');
+  --stackbird-elements-borderColor: theme('colors.gray.800');
+  --stackbird-elements-borderColorActive: theme('colors.gray.600');
 
   --stackbird-elements-bg-depth-1: theme('colors.gray.950');
   --stackbird-elements-bg-depth-2: theme('colors.gray.900');
   --stackbird-elements-bg-depth-3: theme('colors.gray.800');
-  --stackbird-elements-bg-depth-4: theme('colors.alpha.white.5');
+  --stackbird-elements-bg-depth-4: theme('colors.gray.700');
 
-  --stackbird-elements-textPrimary: theme('colors.white');
+  --stackbird-elements-textPrimary: theme('colors.gray.50');
   --stackbird-elements-textSecondary: theme('colors.gray.400');
   --stackbird-elements-textTertiary: theme('colors.gray.500');
 
-  --stackbird-elements-code-background: theme('colors.gray.800');
-  --stackbird-elements-code-text: theme('colors.white');
+  --stackbird-elements-code-background: theme('colors.gray.900');
+  --stackbird-elements-code-text: theme('colors.gray.50');
 
-  --stackbird-elements-button-primary-background: theme('colors.alpha.accent.10');
-  --stackbird-elements-button-primary-backgroundHover: theme('colors.alpha.accent.20');
-  --stackbird-elements-button-primary-text: theme('colors.accent.500');
+  --stackbird-elements-button-primary-background: theme('colors.gray.50');
+  --stackbird-elements-button-primary-backgroundHover: theme('colors.gray.200');
+  --stackbird-elements-button-primary-text: theme('colors.gray.950');
 
-  --stackbird-elements-button-secondary-background: theme('colors.alpha.white.5');
-  --stackbird-elements-button-secondary-backgroundHover: theme('colors.alpha.white.10');
-  --stackbird-elements-button-secondary-text: theme('colors.white');
+  --stackbird-elements-button-secondary-background: transparent;
+  --stackbird-elements-button-secondary-backgroundHover: theme('colors.gray.900');
+  --stackbird-elements-button-secondary-text: theme('colors.gray.50');
 
   --stackbird-elements-button-danger-background: theme('colors.alpha.red.10');
   --stackbird-elements-button-danger-backgroundHover: theme('colors.alpha.red.20');
   --stackbird-elements-button-danger-text: theme('colors.red.500');
 
-  --stackbird-elements-item-contentDefault: theme('colors.alpha.white.50');
-  --stackbird-elements-item-contentActive: theme('colors.white');
-  --stackbird-elements-item-contentAccent: theme('colors.accent.500');
+  --stackbird-elements-item-contentDefault: theme('colors.gray.400');
+  --stackbird-elements-item-contentActive: theme('colors.gray.50');
+  --stackbird-elements-item-contentAccent: theme('colors.gray.50');
   --stackbird-elements-item-contentDanger: theme('colors.red.500');
-  --stackbird-elements-item-backgroundDefault: rgba(255, 255, 255, 0);
-  --stackbird-elements-item-backgroundActive: theme('colors.alpha.white.10');
-  --stackbird-elements-item-backgroundAccent: theme('colors.alpha.accent.10');
+  --stackbird-elements-item-backgroundDefault: transparent;
+  --stackbird-elements-item-backgroundActive: theme('colors.gray.900');
+  --stackbird-elements-item-backgroundAccent: theme('colors.gray.800');
   --stackbird-elements-item-backgroundDanger: theme('colors.alpha.red.10');
 
-  --stackbird-elements-loader-background: theme('colors.alpha.gray.10');
-  --stackbird-elements-loader-progress: theme('colors.accent.500');
+  --stackbird-elements-loader-background: theme('colors.gray.800');
+  --stackbird-elements-loader-progress: theme('colors.gray.50');
 
-  --stackbird-elements-artifacts-background: theme('colors.gray.900');
-  --stackbird-elements-artifacts-backgroundHover: theme('colors.alpha.white.5');
+  --stackbird-elements-artifacts-background: theme('colors.gray.950');
+  --stackbird-elements-artifacts-backgroundHover: theme('colors.gray.900');
   --stackbird-elements-artifacts-borderColor: var(--stackbird-elements-borderColor);
   --stackbird-elements-artifacts-inlineCode-background: theme('colors.gray.800');
-  --stackbird-elements-artifacts-inlineCode-text: theme('colors.white');
+  --stackbird-elements-artifacts-inlineCode-text: theme('colors.gray.50');
 
-  --stackbird-elements-actions-background: theme('colors.gray.900');
-  --stackbird-elements-actions-code-background: theme('colors.gray.800');
+  --stackbird-elements-actions-background: theme('colors.gray.950');
+  --stackbird-elements-actions-code-background: theme('colors.gray.900');
 
-  --stackbird-elements-messages-background: theme('colors.gray.800');
-  --stackbird-elements-messages-linkColor: theme('colors.accent.500');
-  --stackbird-elements-messages-code-background: theme('colors.gray.900');
-  --stackbird-elements-messages-inlineCode-background: theme('colors.gray.700');
+  --stackbird-elements-messages-background: theme('colors.gray.900');
+  --stackbird-elements-messages-linkColor: theme('colors.gray.50');
+  --stackbird-elements-messages-code-background: theme('colors.gray.950');
+  --stackbird-elements-messages-inlineCode-background: theme('colors.gray.800');
   --stackbird-elements-messages-inlineCode-text: var(--stackbird-elements-textPrimary);
 
   --stackbird-elements-icon-success: theme('colors.green.400');
   --stackbird-elements-icon-error: theme('colors.red.400');
-  --stackbird-elements-icon-primary: theme('colors.gray.950');
-  --stackbird-elements-icon-secondary: theme('colors.gray.600');
+  --stackbird-elements-icon-primary: theme('colors.gray.50');
+  --stackbird-elements-icon-secondary: theme('colors.gray.400');
   --stackbird-elements-icon-tertiary: theme('colors.gray.500');
 
-  --stackbird-elements-dividerColor: theme('colors.gray.100');
+  --stackbird-elements-dividerColor: theme('colors.gray.800');
 
-  --stackbird-elements-prompt-background: theme('colors.alpha.gray.80');
+  --stackbird-elements-prompt-background: theme('colors.gray.900');
 
-  --stackbird-elements-sidebar-dropdownShadow: theme('colors.alpha.gray.30');
-  --stackbird-elements-sidebar-buttonBackgroundDefault: theme('colors.alpha.accent.10');
-  --stackbird-elements-sidebar-buttonBackgroundHover: theme('colors.alpha.accent.20');
-  --stackbird-elements-sidebar-buttonText: theme('colors.accent.500');
+  --stackbird-elements-sidebar-dropdownShadow: theme('colors.alpha.black.50');
+  --stackbird-elements-sidebar-buttonBackgroundDefault: transparent;
+  --stackbird-elements-sidebar-buttonBackgroundHover: theme('colors.gray.800');
+  --stackbird-elements-sidebar-buttonText: theme('colors.gray.50');
+  --stackbird-elements-sidebar-background: theme('colors.gray.950');
 
   --stackbird-elements-preview-addressBar-background: var(--stackbird-elements-bg-depth-1);
-  --stackbird-elements-preview-addressBar-backgroundHover: theme('colors.alpha.white.5');
+  --stackbird-elements-preview-addressBar-backgroundHover: theme('colors.gray.900');
   --stackbird-elements-preview-addressBar-backgroundActive: var(--stackbird-elements-bg-depth-1);
   --stackbird-elements-preview-addressBar-text: var(--stackbird-elements-textSecondary);
   --stackbird-elements-preview-addressBar-textActive: var(--stackbird-elements-textPrimary);
@@ -187,30 +189,30 @@
   --stackbird-elements-terminals-background: var(--stackbird-elements-bg-depth-1);
   --stackbird-elements-terminals-buttonBackground: var(--stackbird-elements-bg-depth-3);
 
-  --stackbird-elements-cta-background: theme('colors.alpha.white.10');
-  --stackbird-elements-cta-text: theme('colors.white');
+  --stackbird-elements-cta-background: theme('colors.gray.800');
+  --stackbird-elements-cta-text: theme('colors.gray.50');
 
   /* Terminal Colors */
   --stackbird-terminal-background: var(--stackbird-elements-terminals-background);
-  --stackbird-terminal-foreground: #eff0eb;
-  --stackbird-terminal-selection-background: #97979b33;
+  --stackbird-terminal-foreground: #FAFAFA;
+  --stackbird-terminal-selection-background: #3F3F46;
   --stackbird-terminal-black: #000000;
-  --stackbird-terminal-red: #ff5c57;
-  --stackbird-terminal-green: #5af78e;
-  --stackbird-terminal-yellow: #f3f99d;
-  --stackbird-terminal-blue: #57c7ff;
-  --stackbird-terminal-magenta: #ff6ac1;
-  --stackbird-terminal-cyan: #9aedfe;
-  --stackbird-terminal-white: #f1f1f0;
-  --stackbird-terminal-brightBlack: #686868;
-  --stackbird-terminal-brightRed: #ff5c57;
-  --stackbird-terminal-brightGreen: #5af78e;
-  --stackbird-terminal-brightYellow: #f3f99d;
-  --stackbird-terminal-brightBlue: #57c7ff;
-  --stackbird-terminal-brightMagenta: #ff6ac1;
-  --stackbird-terminal-brightCyan: #9aedfe;
-  --stackbird-terminal-brightWhite: #f1f1f0;
-  --modern-scrollbar-thumb-background: rgba(100, 100, 100, 0.3); // Example dark theme color (adjust as needed)
+  --stackbird-terminal-red: #EF4444;
+  --stackbird-terminal-green: #22C55E;
+  --stackbird-terminal-yellow: #EAB308;
+  --stackbird-terminal-blue: #3B82F6;
+  --stackbird-terminal-magenta: #A855F7;
+  --stackbird-terminal-cyan: #06B6D4;
+  --stackbird-terminal-white: #FAFAFA;
+  --stackbird-terminal-brightBlack: #71717A;
+  --stackbird-terminal-brightRed: #F87171;
+  --stackbird-terminal-brightGreen: #4ADE80;
+  --stackbird-terminal-brightYellow: #FACC15;
+  --stackbird-terminal-brightBlue: #60A5FA;
+  --stackbird-terminal-brightMagenta: #C084FC;
+  --stackbird-terminal-brightCyan: #22D3EE;
+  --stackbird-terminal-brightWhite: #FFFFFF;
+  --modern-scrollbar-thumb-background: rgba(100, 100, 100, 0.3);
   --modern-scrollbar-thumb-backgroundHover: rgba(10, 10, 10, 0.8);
 }
 

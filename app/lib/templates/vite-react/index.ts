@@ -19,7 +19,9 @@ export const viteReactTemplate: BundledTemplate = {
   },
   "dependencies": {
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "framer-motion": "^12.23.24",
+    "react-icons": "^5.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",

@@ -17,7 +17,8 @@ export const vueTemplate: BundledTemplate = {
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.5.12"
+    "vue": "^3.5.12",
+    "framer-motion": "^12.23.24"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.4",

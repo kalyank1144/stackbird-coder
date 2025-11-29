@@ -16,6 +16,10 @@ export const vanillaViteTemplate: BundledTemplate = {
     "build": "vite build",
     "preview": "vite preview"
   },
+  "dependencies": {
+    "framer-motion": "^12.23.24",
+    "react-icons": "^5.3.0"
+  },
   "devDependencies": {
     "vite": "^5.4.10"
   }

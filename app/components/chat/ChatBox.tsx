@@ -11,7 +11,6 @@ import { toast } from 'react-toastify';
 import { SpeechRecognitionButton } from '~/components/chat/SpeechRecognition';
 import { SupabaseConnection } from './SupabaseConnection';
 import { ExpoQrModal } from '~/components/workbench/ExpoQrModal';
-import styles from './BaseChat.module.scss';
 import type { ProviderInfo } from '~/types/model';
 import { ColorSchemeDialog } from '~/components/ui/ColorSchemeDialog';
 import type { DesignScheme } from '~/types/design-scheme';
@@ -65,35 +64,9 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
   return (
     <div
       className={classNames(
-        'relative bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-3 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 shadow-xl shadow-slate-200/20 dark:shadow-slate-950/50 relative w-full max-w-chat mx-auto z-prompt',
+        'relative bg-stackbird-elements-background-depth-2 p-3 rounded-lg border border-stackbird-elements-borderColor shadow-sm relative w-full max-w-chat mx-auto z-prompt',
       )}
     >
-      <svg className={classNames(styles.PromptEffectContainer)}>
-        <defs>
-          <linearGradient
-            id="line-gradient"
-            x1="20%"
-            y1="0%"
-            x2="-14%"
-            y2="10%"
-            gradientUnits="userSpaceOnUse"
-            gradientTransform="rotate(-45)"
-          >
-            <stop offset="0%" stopColor="#b44aff" stopOpacity="0%"></stop>
-            <stop offset="40%" stopColor="#b44aff" stopOpacity="80%"></stop>
-            <stop offset="50%" stopColor="#b44aff" stopOpacity="80%"></stop>
-            <stop offset="100%" stopColor="#b44aff" stopOpacity="0%"></stop>
-          </linearGradient>
-          <linearGradient id="shine-gradient">
-            <stop offset="0%" stopColor="white" stopOpacity="0%"></stop>
-            <stop offset="40%" stopColor="#ffffff" stopOpacity="80%"></stop>
-            <stop offset="50%" stopColor="#ffffff" stopOpacity="80%"></stop>
-            <stop offset="100%" stopColor="white" stopOpacity="0%"></stop>
-          </linearGradient>
-        </defs>
-        <rect className={classNames(styles.PromptEffectLine)} pathLength="100" strokeLinecap="round"></rect>
-        <rect className={classNames(styles.PromptShine)} x="48" y="24" width="70" height="1"></rect>
-      </svg>
       <div>
         <ClientOnly>
           {() => (
@@ -134,13 +107,13 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
       {props.selectedElement && (
         <div className="flex mx-1.5 gap-2 items-center justify-between rounded-lg rounded-b-none border border-b-none border-stackbird-elements-borderColor text-stackbird-elements-textPrimary flex py-1 px-2.5 font-medium text-xs">
           <div className="flex gap-2 items-center lowercase">
-            <code className="bg-accent-500 rounded-4px px-1.5 py-1 mr-0.5 text-white">
+            <code className="bg-stackbird-elements-background-depth-3 rounded-sm px-1.5 py-1 mr-0.5 text-stackbird-elements-textPrimary">
               {props?.selectedElement?.tagName}
             </code>
             selected for inspection
           </div>
           <button
-            className="bg-transparent text-accent-500 pointer-auto"
+            className="bg-transparent text-stackbird-elements-textSecondary hover:text-stackbird-elements-textPrimary pointer-auto"
             onClick={() => props.setSelectedElement?.(null)}
           >
             Clear
@@ -149,22 +122,22 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
       )}
       <div
         className={classNames(
-          'relative border border-slate-200 dark:border-slate-700/50 rounded-xl bg-white/50 dark:bg-slate-800/30',
+          'relative border border-stackbird-elements-borderColor rounded-lg bg-stackbird-elements-background-depth-1',
         )}
       >
         <textarea
           ref={props.textareaRef}
           className={classNames(
-            'w-full pl-4 pt-4 pr-16 outline-none resize-none text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 bg-transparent text-sm',
+            'w-full pl-4 pt-4 pr-16 outline-none resize-none text-stackbird-elements-textPrimary placeholder-stackbird-elements-textTertiary bg-transparent text-sm',
             'transition-all duration-200',
           )}
           onDragEnter={(e) => {
             e.preventDefault();
-            e.currentTarget.style.border = '2px solid #1488fc';
+            e.currentTarget.style.border = '2px solid var(--stackbird-elements-borderColorActive)';
           }}
           onDragOver={(e) => {
             e.preventDefault();
-            e.currentTarget.style.border = '2px solid #1488fc';
+            e.currentTarget.style.border = '2px solid var(--stackbird-elements-borderColorActive)';
           }}
           onDragLeave={(e) => {
             e.preventDefault();
@@ -248,7 +221,7 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
             <McpTools />
             <IconButton
               title="Upload file"
-              className="transition-all hover:bg-purple-100 dark:hover:bg-purple-900/30 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg"
+              className="transition-all hover:bg-stackbird-elements-background-depth-3 hover:text-stackbird-elements-textPrimary rounded-md text-stackbird-elements-textSecondary"
               onClick={() => props.handleFileUpload()}
             >
               <div className="i-ph:paperclip text-lg"></div>
@@ -257,7 +230,7 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
               title="Enhance prompt"
               disabled={props.input.length === 0 || props.enhancingPrompt}
               className={classNames(
-                'transition-all hover:bg-amber-100 dark:hover:bg-amber-900/30 hover:text-amber-600 dark:hover:text-amber-400 rounded-lg',
+                'transition-all hover:bg-stackbird-elements-background-depth-3 hover:text-stackbird-elements-textPrimary rounded-md text-stackbird-elements-textSecondary',
                 props.enhancingPrompt ? 'opacity-100' : '',
               )}
               onClick={() => {
@@ -266,7 +239,7 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
               }}
             >
               {props.enhancingPrompt ? (
-                <div className="i-svg-spinners:90-ring-with-bg text-purple-500 text-lg animate-spin"></div>
+                <div className="i-svg-spinners:90-ring-with-bg text-stackbird-elements-textPrimary text-lg animate-spin"></div>
               ) : (
                 <div className="i-stackbird:stars text-lg"></div>
               )}
@@ -282,10 +255,10 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
               <IconButton
                 title="Discuss"
                 className={classNames(
-                  'transition-all flex items-center gap-1 px-2 rounded-lg',
+                  'transition-all flex items-center gap-1 px-2 rounded-md',
                   props.chatMode === 'discuss'
-                    ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400'
-                    : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400',
+                    ? 'bg-stackbird-elements-background-depth-3 text-stackbird-elements-textPrimary'
+                    : 'hover:bg-stackbird-elements-background-depth-3 text-stackbird-elements-textSecondary',
                 )}
                 onClick={() => {
                   props.setChatMode?.(props.chatMode === 'discuss' ? 'build' : 'discuss');
@@ -297,12 +270,12 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
             )}
           </div>
           {props.input.length > 3 ? (
-            <div className="text-xs text-slate-400 dark:text-slate-500 hidden sm:block">
-              <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono text-[10px]">
+            <div className="text-xs text-stackbird-elements-textTertiary hidden sm:block">
+              <kbd className="px-1.5 py-0.5 rounded bg-stackbird-elements-background-depth-3 text-stackbird-elements-textSecondary font-mono text-[10px]">
                 Shift
               </kbd>{' '}
               +{' '}
-              <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono text-[10px]">
+              <kbd className="px-1.5 py-0.5 rounded bg-stackbird-elements-background-depth-3 text-stackbird-elements-textSecondary font-mono text-[10px]">
                 Enter
               </kbd>{' '}
               for new line

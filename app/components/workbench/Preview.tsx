@@ -7,7 +7,6 @@ import { ScreenshotSelector } from './ScreenshotSelector';
 import { expoUrlAtom } from '~/lib/stores/qrCodeStore';
 import { ExpoQrModal } from '~/components/workbench/ExpoQrModal';
 import type { ElementInfo } from './Inspector';
-import { SimulatorControls } from './SimulatorControls';
 
 type ResizeSide = 'left' | 'right' | null;
 
@@ -728,9 +727,6 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Mobile Simulator Controls */}
-          <SimulatorControls projectPath="/tmp/project" projectType="expo" />
-
           <IconButton
             icon="i-ph:devices"
             onClick={toggleDeviceMode}

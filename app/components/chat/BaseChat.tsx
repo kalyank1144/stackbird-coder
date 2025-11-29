@@ -365,7 +365,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         ref={ref}
         className={classNames(
           styles.BaseChat,
-          'relative flex h-full w-full overflow-hidden bg-gradient-to-br from-slate-50 via-white to-purple-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-purple-950/20',
+          'relative flex h-full w-full overflow-hidden bg-stackbird-elements-background-depth-1',
         )}
         data-chat-visible={showChat}
         data-workbench-visible={showWorkbench}
@@ -384,36 +384,31 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
               <div id="intro" className="mt-[10vh] max-w-3xl mx-auto text-center px-4 lg:px-0">
                 {/* Animated Logo */}
                 <div className="mb-8 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-32 h-32 rounded-full bg-gradient-to-r from-purple-500/20 to-indigo-500/20 blur-2xl animate-pulse" />
-                  </div>
-                  <div className="relative w-20 h-20 mx-auto rounded-3xl bg-gradient-to-br from-purple-500 via-purple-600 to-indigo-600 flex items-center justify-center shadow-2xl shadow-purple-500/30 transform hover:scale-105 transition-transform duration-300">
-                    <span className="i-ph:bird-fill text-4xl text-white drop-shadow-lg" />
+                  <div className="relative w-20 h-20 mx-auto rounded-2xl bg-stackbird-elements-textPrimary flex items-center justify-center shadow-lg shadow-black/5">
+                    <span className="i-ph:bird-fill text-4xl text-stackbird-elements-background-depth-1" />
                   </div>
                 </div>
                 {/* Title */}
-                <h1 className="text-4xl lg:text-6xl font-bold mb-4">
-                  <span className="bg-gradient-to-r from-slate-800 via-purple-700 to-indigo-700 dark:from-white dark:via-purple-300 dark:to-indigo-300 bg-clip-text text-transparent">
-                    Build anything
-                  </span>
+                <h1 className="text-4xl lg:text-6xl font-bold mb-4 text-stackbird-elements-textPrimary">
+                  Build anything
                 </h1>
-                <p className="text-lg lg:text-xl mb-2 text-slate-600 dark:text-slate-300 font-medium">
+                <p className="text-lg lg:text-xl mb-2 text-stackbird-elements-textSecondary font-medium">
                   with AI-powered code generation
                 </p>
-                <p className="text-base text-slate-500 dark:text-slate-400 max-w-lg mx-auto mb-8">
+                <p className="text-base text-stackbird-elements-textTertiary max-w-lg mx-auto mb-8">
                   Describe your idea in natural language and watch it come to life. No coding experience required.
                 </p>
                 {/* Feature Pills */}
                 <div className="flex flex-wrap justify-center gap-2 mb-6">
-                  <span className="px-3 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 text-sm font-medium border border-purple-200 dark:border-purple-700/50">
+                  <span className="px-3 py-1.5 rounded-full bg-stackbird-elements-background-depth-2 text-stackbird-elements-textSecondary text-sm font-medium border border-stackbird-elements-borderColor">
                     <span className="i-ph:lightning-fill mr-1" />
                     Fast Generation
                   </span>
-                  <span className="px-3 py-1.5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 text-sm font-medium border border-indigo-200 dark:border-indigo-700/50">
+                  <span className="px-3 py-1.5 rounded-full bg-stackbird-elements-background-depth-2 text-stackbird-elements-textSecondary text-sm font-medium border border-stackbird-elements-borderColor">
                     <span className="i-ph:code mr-1" />
                     Clean Code
                   </span>
-                  <span className="px-3 py-1.5 rounded-full bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300 text-sm font-medium border border-violet-200 dark:border-violet-700/50">
+                  <span className="px-3 py-1.5 rounded-full bg-stackbird-elements-background-depth-2 text-stackbird-elements-textSecondary text-sm font-medium border border-stackbird-elements-borderColor">
                     <span className="i-ph:eye mr-1" />
                     Live Preview
                   </span>

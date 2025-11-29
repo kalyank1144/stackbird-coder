@@ -139,7 +139,7 @@ export const DeployButton = ({
           <DropdownMenu.Content
             className={classNames(
               'z-[250]',
-              'bg-stackbird-elements-background-depth-2',
+              'bg-stackbird-elements-background-depth-1',
               'rounded-lg shadow-lg',
               'border border-stackbird-elements-borderColor',
               'animate-in fade-in-0 zoom-in-95',

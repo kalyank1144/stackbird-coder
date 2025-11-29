@@ -24,7 +24,8 @@ export const expoTemplate: BundledTemplate = {
     "react-native": "0.74.5",
     "react-native-safe-area-context": "4.10.5",
     "react-native-screens": "3.31.1",
-    "nativewind": "^2.0.11"
+    "nativewind": "^2.0.11",
+    "framer-motion": "^12.23.24"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
